@@ -42,20 +42,35 @@
                 <p class="text-slate-500 text-sm">Masukkan kredensial Anda untuk melanjutkan ke dashboard.</p>
             </div>
 
-            <form action="admin/index.html" class="space-y-5">
-                <div>
-                    <label class="block text-[11px] font-bold text-slate-700 mb-2 uppercase tracking-wide">ID Pengguna / Email</label>
-                    <input type="text" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all" placeholder="masukkan id...">
-                </div>
-                <div>
-                    <label class="block text-[11px] font-bold text-slate-700 mb-2 uppercase tracking-wide">Kata Sandi</label>
-                    <input type="password" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all" placeholder="••••••••">
-                </div>
-                
-                <button class="w-full bg-primary text-white font-bold py-4 rounded-xl hover:bg-slate-950 transition-all shadow-lg shadow-primary/20">
-                    Masuk ke Sistem
-                </button>
-            </form>
+           <form onsubmit="doLogin(event)" class="space-y-5">
+    <input type="text" id="user" required class="w-full p-4 border rounded-xl" placeholder="NISN / NIK / Username">
+    
+    <div id="password-container">
+        <input type="date" id="pass-date" class="w-full p-4 border rounded-xl hidden" title="Pilih Tanggal Lahir">
+        <input type="password" id="pass-text" class="w-full p-4 border rounded-xl" placeholder="Password">
+    </div>
+
+    <button type="submit" class="w-full bg-primary text-white p-4 rounded-xl font-bold">Masuk ke Sistem</button>
+</form>
+
+<script>
+    // Logika agar input otomatis berubah jika user mengetik NISN/NIK
+    const userField = document.getElementById('user');
+    userField.addEventListener('input', () => {
+        const val = userField.value;
+        const passDate = document.getElementById('pass-date');
+        const passText = document.getElementById('pass-text');
+
+        // Jika panjang input 10 atau 16 digit, asumsikan itu NISN/NIK, tampilkan Date Picker
+        if (val.length >= 10) {
+            passDate.classList.remove('hidden');
+            passText.classList.add('hidden');
+        } else {
+            passDate.classList.add('hidden');
+            passText.classList.remove('hidden');
+        }
+    });
+</script>
 
             <div class="mt-8 text-center">
                 <a href="index.html" class="text-xs font-bold text-slate-400 hover:text-primary transition-colors flex items-center justify-center gap-2">
