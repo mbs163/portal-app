@@ -11,23 +11,31 @@
         tailwind.config = { theme: { extend: { colors: { primary: '#0B1F3B', accent: '#D4AF37' } } } }
     </script>
 </head>
-<body class="bg-slate-50 font-sans min-h-screen flex items-center justify-center p-4">
+<body class="bg-slate-50 font-sans min-h-screen flex flex-col items-center justify-center p-4">
 
-    <div class="bg-white w-full max-w-4xl rounded-3xl shadow-2xl flex overflow-hidden border border-slate-100 min-h-[500px]">
+    <!-- Container Utama -->
+    <div class="bg-white w-full max-w-4xl rounded-3xl shadow-2xl flex overflow-hidden border border-slate-100 min-h-[500px] my-auto">
         
-        <!-- Left Side: Dynamic Branding -->
+        <!-- Left Side: Branding (Hanya Desktop) -->
         <div id="brand-panel" class="hidden md:flex w-1/2 bg-primary p-12 flex-col justify-between text-white relative overflow-hidden transition-all duration-500">
             <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
             <div class="relative z-10">
                 <div id="brand-icon" class="w-12 h-12 bg-accent text-primary rounded-xl flex items-center justify-center font-bold text-xl mb-6">M</div>
-                <h2 id="brand-title" class="text-3xl font-extrabold mb-4 transition-opacity duration-300">Sistem Akademik Terintegrasi</h2>
-                <p id="brand-desc" class="text-slate-300 text-sm leading-relaxed transition-opacity duration-300">Kelola administrasi, kepegawaian, dan data madrasah dengan sistem yang aman, cepat, dan modern.</p>
+                <h2 id="brand-title" class="text-3xl font-extrabold mb-4">Sistem Akademik Terintegrasi</h2>
+                <p id="brand-desc" class="text-slate-300 text-sm leading-relaxed">Kelola administrasi, kepegawaian, dan data madrasah dengan sistem yang aman, cepat, dan modern.</p>
             </div>
-            <div class="relative z-10 text-xs text-slate-400 font-medium uppercase tracking-widest">© 2026 MAS MANBA'USSALAM</div>
+            <div class="relative z-10 text-xs text-slate-400 font-medium uppercase tracking-widest">&copy; 2026 MAS MANBA'USSALAM</div>
         </div>
 
         <!-- Right Side: Login Form -->
         <div class="w-full md:w-1/2 p-8 sm:p-12 flex flex-col justify-center">
+            
+            <!-- Mobile Logo (Muncul hanya di Mobile) -->
+            <div class="md:hidden flex justify-center mb-6">
+                <div class="w-14 h-14 bg-primary text-accent rounded-2xl flex items-center justify-center font-bold text-2xl shadow-lg">M</div>
+            </div>
+
+            <!-- TABS -->
             <div class="flex gap-2 mb-8 bg-slate-100 p-1 rounded-xl">
                 <button id="btn-user" onclick="switchTab('user')" class="flex-1 py-3 text-sm font-bold rounded-lg transition-all bg-white text-primary shadow-sm">Akademik</button>
                 <button id="btn-admin" onclick="switchTab('admin')" class="flex-1 py-3 text-sm font-bold rounded-lg transition-all text-slate-500 hover:text-primary">Admin</button>
@@ -36,14 +44,14 @@
             <form id="form-user" onsubmit="handleLogin(event, 'user')" class="space-y-5 animate-in fade-in duration-500">
                 <h3 class="text-xl font-bold text-slate-900">Login Akademik</h3>
                 <input type="text" id="user-id" required class="w-full p-4 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary outline-none" placeholder="NISN / NIK">
-                <input type="date" id="user-pass" required class="w-full p-4 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary outline-none" title="Tanggal Lahir sebagai Password">
+                <input type="date" id="user-pass" required class="w-full p-4 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary outline-none" title="Tanggal Lahir">
                 <button type="submit" class="w-full bg-primary text-white p-4 rounded-xl font-bold hover:bg-slate-950 transition-all">Masuk Sistem</button>
             </form>
 
             <form id="form-admin" onsubmit="handleLogin(event, 'admin')" class="space-y-5 hidden animate-in fade-in duration-500">
                 <h3 class="text-xl font-bold text-slate-900">Login Admin</h3>
-                <input type="text" id="admin-user" required class="w-full p-4 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary outline-none" placeholder="Username Admin">
-                <input type="password" id="admin-pass" required class="w-full p-4 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary outline-none" placeholder="Password Khusus">
+                <input type="text" id="admin-user" required class="w-full p-4 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary outline-none" placeholder="Username">
+                <input type="password" id="admin-pass" required class="w-full p-4 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary outline-none" placeholder="Password">
                 <button type="submit" class="w-full bg-accent text-primary p-4 rounded-xl font-bold hover:bg-yellow-500 transition-all">Login Administrator</button>
             </form>
 
@@ -55,14 +63,17 @@
         </div>
     </div>
 
+    <!-- Footer Global (Muncul di semua device) -->
+    <footer class="text-center text-slate-400 text-[11px] font-semibold uppercase tracking-widest pb-4">
+        &copy; 2026 MAS MANBA'USSALAM &bull; Digital Ecosystem
+    </footer>
+
     <script>
         function switchTab(tab) {
             const formUser = document.getElementById('form-user');
             const formAdmin = document.getElementById('form-admin');
             const btnUser = document.getElementById('btn-user');
             const btnAdmin = document.getElementById('btn-admin');
-            
-            // Elemen Branding
             const title = document.getElementById('brand-title');
             const desc = document.getElementById('brand-desc');
             const icon = document.getElementById('brand-icon');
@@ -72,8 +83,6 @@
                 formAdmin.classList.remove('hidden');
                 btnAdmin.classList.add('bg-white', 'text-primary', 'shadow-sm');
                 btnUser.classList.remove('bg-white', 'text-primary', 'shadow-sm');
-                
-                // Update Branding untuk Admin
                 title.innerText = "Pusat Kendali Admin";
                 desc.innerText = "Akses eksklusif untuk manajemen sistem, monitoring database, dan konfigurasi server pusat.";
                 icon.innerText = "A";
@@ -82,18 +91,12 @@
                 formUser.classList.remove('hidden');
                 btnUser.classList.add('bg-white', 'text-primary', 'shadow-sm');
                 btnAdmin.classList.remove('bg-white', 'text-primary', 'shadow-sm');
-
-                // Update Branding untuk Akademik
                 title.innerText = "Sistem Akademik Terintegrasi";
                 desc.innerText = "Kelola administrasi, kepegawaian, dan data madrasah dengan sistem yang aman, cepat, dan modern.";
                 icon.innerText = "M";
             }
         }
-
-        function handleLogin(e, type) {
-            e.preventDefault();
-            alert('Proses Login sebagai: ' + type);
-        }
+        function handleLogin(e, type) { e.preventDefault(); alert('Login ' + type + ' berhasil!'); }
     </script>
 </body>
 </html>
