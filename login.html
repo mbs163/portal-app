@@ -11,12 +11,12 @@
         tailwind.config = { theme: { extend: { colors: { primary: '#0B1F3B', accent: '#D4AF37' } } } }
     </script>
 </head>
-<body class="bg-slate-50 font-sans min-h-screen flex flex-col items-center justify-center p-4">
+<<body class="bg-slate-50 font-sans min-h-screen flex flex-col items-center justify-center p-4">
 
-    <!-- Container Utama -->
+    <!-- Container Utama: my-auto memastikan box selalu di tengah vertikal -->
     <div class="bg-white w-full max-w-4xl rounded-3xl shadow-2xl flex overflow-hidden border border-slate-100 min-h-[500px] my-auto">
         
-        <!-- Left Side: Branding (Hanya Desktop) -->
+        <!-- Left Side: Dynamic Branding (Hanya Desktop) -->
         <div id="brand-panel" class="hidden md:flex w-1/2 bg-primary p-12 flex-col justify-between text-white relative overflow-hidden transition-all duration-500">
             <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
             <div class="relative z-10">
@@ -41,6 +41,7 @@
                 <button id="btn-admin" onclick="switchTab('admin')" class="flex-1 py-3 text-sm font-bold rounded-lg transition-all text-slate-500 hover:text-primary">Admin</button>
             </div>
 
+            <!-- Form Akademik -->
             <form id="form-user" onsubmit="handleLogin(event, 'user')" class="space-y-5 animate-in fade-in duration-500">
                 <h3 class="text-xl font-bold text-slate-900">Login Akademik</h3>
                 <input type="text" id="user-id" required class="w-full p-4 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary outline-none" placeholder="NISN / NIK">
@@ -48,6 +49,7 @@
                 <button type="submit" class="w-full bg-primary text-white p-4 rounded-xl font-bold hover:bg-slate-950 transition-all">Masuk Sistem</button>
             </form>
 
+            <!-- Form Admin -->
             <form id="form-admin" onsubmit="handleLogin(event, 'admin')" class="space-y-5 hidden animate-in fade-in duration-500">
                 <h3 class="text-xl font-bold text-slate-900">Login Admin</h3>
                 <input type="text" id="admin-user" required class="w-full p-4 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary outline-none" placeholder="Username">
@@ -63,8 +65,8 @@
         </div>
     </div>
 
-    <!-- Footer Global (Muncul di semua device) -->
-    <footer class="text-center text-slate-400 text-[11px] font-semibold uppercase tracking-widest pb-4">
+    <!-- Footer: mt-auto memastikan footer selalu di bawah dengan jarak yang pas -->
+    <footer class="mt-auto pt-4 text-center text-slate-400 text-[10px] font-semibold uppercase tracking-widest pb-4">
         &copy; 2026 MAS MANBA'USSALAM &bull; Digital Ecosystem
     </footer>
 
