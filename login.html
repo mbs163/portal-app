@@ -64,6 +64,38 @@
             </div>
         </div>
     </div>
+    <!-- Ganti bagian script di dalam login.html Anda dengan ini -->
+<script>
+    function doLogin(e) {
+        e.preventDefault();
+        const user = document.getElementById('user').value;
+        const pass = document.getElementById('pass').value;
+
+        // Simulasi Database Hardcoded
+        if (user === 'siswa1' && pass === 'siswa123') {
+            localStorage.setItem('userRole', 'siswa');
+            window.location.href = 'index.html';
+        } else if (user === 'guru1' && pass === 'guru123') {
+            localStorage.setItem('userRole', 'guru');
+            window.location.href = 'index.html';
+        } else if (user === 'kepala1' && pass === 'kepala123') {
+            localStorage.setItem('userRole', 'kepala');
+            window.location.href = 'index.html';
+        } else if (user === 'admin1' && pass === 'admin123') {
+            localStorage.setItem('userRole', 'admin');
+            window.location.href = 'index.html';
+        } else {
+            alert('Username atau Password salah!');
+        }
+    }
+</script>
+
+<!-- Pastikan form Anda memiliki onsubmit="doLogin(event)" -->
+<form onsubmit="doLogin(event)" class="space-y-5">
+    <input type="text" id="user" required class="w-full p-4 border rounded-xl" placeholder="Username">
+    <input type="password" id="pass" required class="w-full p-4 border rounded-xl" placeholder="Password">
+    <button class="w-full bg-primary text-white p-4 rounded-xl font-bold">Masuk ke Sistem</button>
+</form>
 
 </body>
 </html>
