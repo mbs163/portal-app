@@ -3,135 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Portal Terpadu | MAS MANBA'USSALAM</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Portal Aplikasi | MAS MANBA'USSALAM</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: { primary: '#0B1F3B', accent: '#D4AF37', bgLight: '#F3F4F6', textDark: '#111827' },
-                    fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'] }
-                }
-            }
-        }
-    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 </head>
-<body class="bg-bgLight text-textDark font-sans antialiased flex flex-col min-h-screen justify-between relative overflow-x-hidden">
-
-    <!-- HEADER / NAV -->
-    <header class="bg-white shadow-sm w-full relative z-10">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex justify-between items-center">
-            <!-- Logo -->
-            <div class="flex items-center gap-2 sm:gap-3">
-                <div class="w-10 h-10 bg-primary text-accent rounded-xl flex items-center justify-center text-lg sm:text-xl shadow-md">
-                    <i class="fa-solid fa-cubes"></i>
-                </div>
-                <div>
-                    <h1 class="font-bold text-sm sm:text-base text-primary tracking-wide">MANBA'USSALAM DIGITAL</h1>
-                    <p class="text-[9px] text-gray-400 font-bold uppercase tracking-widest hidden sm:block">Gateway Sistem Terpadu</p>
-                </div>
-            </div>
-            <!-- Tombol Kembali ke Web Publik -->
-            <a id="link-web-publik" href="#" class="bg-gray-50 border border-gray-200 px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-[10px] sm:text-xs font-bold text-primary hover:text-accent hover:border-accent transition-all flex items-center gap-1.5 shadow-sm">
-                <i class="fa-solid fa-globe"></i> <span class="hidden sm:inline">Web Sekolah</span>
-            </a>
+<body class="bg-gray-50 min-h-screen flex flex-col">
+    <!-- Header -->
+    <header class="bg-white border-b sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-6 h-20 flex justify-between items-center">
+            <h1 class="font-bold text-lg text-slate-800">PORTAL DIGITAL</h1>
+            <a href="login.html" class="bg-slate-900 text-white px-5 py-2 rounded-lg text-sm font-bold">Login Internal</a>
         </div>
     </header>
 
-    <!-- KONTEN LOGIN -->
-    <main class="flex-1 flex items-center justify-center p-4 py-10 relative z-10">
-        <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl shadow-primary/5 border border-gray-100 overflow-hidden relative">
-            
-            <!-- Banner Atas Card -->
-            <div class="bg-primary p-6 text-center relative overflow-hidden">
-                <div class="relative z-10">
-                    <h2 class="text-white font-bold text-lg sm:text-xl">Selamat Datang! 👋</h2>
-                    <p class="text-gray-300 text-xs mt-1">Silakan masuk ke Portal Administrasi</p>
-                </div>
-                <!-- Ornamen Islami -->
-                <i class="fa-solid fa-mosque absolute -right-2 -bottom-4 text-6xl text-white opacity-10"></i>
-            </div>
-
-            <!-- Form -->
-            <form class="p-6 sm:p-8 space-y-4" onsubmit="handleLogin(event)">
-                <div>
-                    <label class="block text-xs font-bold text-gray-500 mb-1.5">Username / NISN / NIP *</label>
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400 text-sm"><i class="fa-solid fa-user"></i></span>
-                        <input type="text" id="username" required placeholder="Masukkan ID Pengguna" class="w-full text-xs sm:text-sm pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-gray-500 mb-1.5">Kata Sandi *</label>
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400 text-sm"><i class="fa-solid fa-lock"></i></span>
-                        <input type="password" id="password" required placeholder="••••••••" class="w-full text-xs sm:text-sm pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all">
-                    </div>
-                </div>
-
-                <div class="flex items-center justify-between text-[11px] pt-1 pb-2">
-                    <label class="flex items-center gap-1.5 text-gray-500 cursor-pointer"><input type="checkbox" class="rounded border-gray-300 text-primary focus:ring-primary"> Ingat Saya</label>
-                    <a href="#" class="text-primary font-bold hover:underline">Lupa Sandi?</a>
-                </div>
-
-                <button type="submit" class="w-full bg-primary text-white text-sm font-bold py-3.5 rounded-xl hover:bg-emerald-900 shadow-lg shadow-primary/20 transition-all flex justify-center items-center gap-2">
-                    Masuk ke Sistem <i class="fa-solid fa-arrow-right-to-bracket text-accent"></i>
-                </button>
-            </form>
-
-            <!-- Mode Testing (Hanya untuk memudahkan saat masa trial) -->
-            <div class="p-4 bg-gray-50 border-t border-gray-100 text-center">
-                <p class="text-[9px] text-gray-400 font-bold uppercase tracking-wider mb-2">Simulasi Klik Cepat</p>
-                <div class="flex gap-2 justify-center">
-                    <button onclick="demoLogin('admin')" class="px-4 py-1.5 bg-slate-800 text-accent text-[10px] font-bold rounded-lg hover:bg-black transition-colors shadow-sm"><i class="fa-solid fa-shield mr-1"></i> Super Admin</button>
-                    <button onclick="demoLogin('siswa')" class="px-4 py-1.5 bg-blue-100 text-blue-700 text-[10px] font-bold rounded-lg hover:bg-blue-200 transition-colors shadow-sm"><i class="fa-solid fa-graduation-cap mr-1"></i> Siswa / Umum</button>
-                </div>
-            </div>
+    <!-- Content: Grid Aplikasi -->
+    <main class="flex-1 max-w-6xl mx-auto w-full p-6">
+        <h2 class="text-2xl font-bold mb-8 text-slate-800">Pilih Aplikasi</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+            <!-- App Card -->
+            <a href="pmb/index.html" class="bg-white p-6 rounded-2xl shadow-sm border hover:shadow-lg transition-all">
+                <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-user-plus"></i></div>
+                <h3 class="font-bold text-slate-800">PMB Online</h3>
+                <p class="text-xs text-gray-500 mt-1">Daftar murid baru tanpa login.</p>
+            </a>
+            <a href="login.html" class="bg-white p-6 rounded-2xl shadow-sm border hover:shadow-lg transition-all">
+                <div class="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-chart-line"></i></div>
+                <h3 class="font-bold text-slate-800">SIMPEG</h3>
+                <p class="text-xs text-gray-500 mt-1">Data guru (Memerlukan Login).</p>
+            </a>
         </div>
     </main>
-
-    <!-- FOOTER -->
-    <footer class="text-center py-4 text-[10px] sm:text-[11px] text-gray-400 border-t border-gray-200 bg-white w-full relative z-10">
-        &copy; 2026 MAS MANBA'USSALAM. Powered by GitHub Pages.
-    </footer>
-
-    <!-- SCRIPT KONFIGURASI ROUTING -->
-    <script>
-        const GITHUB_USER = 'mbs163'; 
-        
-        const CONFIG = {
-            // URL saat masih di tahap GitHub Pages
-            webPublikBase: `https://${GITHUB_USER}.github.io/web-sekolah/`,
-            portalAppBase: `https://${GITHUB_USER}.github.io/portal-app/`
-            // Nanti jika sudah pakai custom domain tinggal diganti
-        };
-
-        // Pasang link kembali ke web sekolah
-        document.getElementById('link-web-publik').href = CONFIG.webPublikBase;
-
-        // Logika Lempar Halaman Saat Form di Submit
-        function handleLogin(e) {
-            e.preventDefault();
-            const user = document.getElementById('username').value.toLowerCase();
-            
-            if(user === 'admin') {
-                window.location.href = CONFIG.portalAppBase + "admin/index.html";
-            } else {
-                // Default ke aplikasi PMB sebagai simulasi
-                window.location.href = CONFIG.portalAppBase + "pmb/index.html";
-            }
-        }
-
-        // Logika Lempar Halaman untuk Tombol Simulasi
-        function demoLogin(role) {
-            if(role === 'admin') {
-                window.location.href = CONFIG.portalAppBase + "admin/index.html";
-            } else {
-                window.location.href = CONFIG.portalAppBase + "pmb/index.html";
-            }
-        }
-    </script>
+    <footer class="text-center py-6 text-xs text-gray-400">© 2026 MANBA'USSALAM</footer>
 </body>
 </html>
