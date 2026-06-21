@@ -5,34 +5,74 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal Aplikasi | MAS MANBA'USSALAM</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { primary: '#0B1F3B', accent: '#D4AF37', bgLight: '#F8FAFC' },
+                    fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
 </head>
-<body class="bg-gray-50 min-h-screen flex flex-col">
-    <!-- Header -->
-    <header class="bg-white border-b sticky top-0 z-50">
+<body class="bg-bgLight min-h-screen font-sans">
+
+    <!-- Header Premium -->
+    <header class="bg-white/80 backdrop-blur-md border-b border-slate-100 sticky top-0 z-50">
         <div class="max-w-6xl mx-auto px-6 h-20 flex justify-between items-center">
-            <h1 class="font-bold text-lg text-slate-800">PORTAL DIGITAL</h1>
-            <a href="login.html" class="bg-slate-900 text-white px-5 py-2 rounded-lg text-sm font-bold">Login Internal</a>
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-primary text-accent rounded-lg flex items-center justify-center font-bold text-lg">M</div>
+                <h1 class="font-extrabold text-slate-800 tracking-tight">MANBA'USSALAM<span class="text-primary">PORTAL</span></h1>
+            </div>
+            <a href="login.html" class="flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-full font-bold text-xs hover:bg-slate-950 transition-all shadow-lg hover:shadow-primary/20">
+                <i class="fa-solid fa-lock text-[10px]"></i> Login Internal
+            </a>
         </div>
     </header>
 
+    <!-- Hero Section -->
+    <section class="max-w-6xl mx-auto px-6 pt-16 pb-10">
+        <h2 class="text-4xl lg:text-5xl font-extrabold text-slate-900 mb-4">Sistem Terpadu Madrasah.</h2>
+        <p class="text-slate-500 max-w-xl text-lg">Pilih modul aplikasi yang Anda butuhkan. Semua data terpusat dan aman dalam ekosistem digital kami.</p>
+    </section>
+
     <!-- Content: Grid Aplikasi -->
-    <main class="flex-1 max-w-6xl mx-auto w-full p-6">
-        <h2 class="text-2xl font-bold mb-8 text-slate-800">Pilih Aplikasi</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-            <!-- App Card -->
-            <a href="pmb/index.html" class="bg-white p-6 rounded-2xl shadow-sm border hover:shadow-lg transition-all">
-                <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-user-plus"></i></div>
-                <h3 class="font-bold text-slate-800">PMB Online</h3>
-                <p class="text-xs text-gray-500 mt-1">Daftar murid baru tanpa login.</p>
+    <main class="max-w-6xl mx-auto px-6 pb-20">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            
+            <!-- PMB Card -->
+            <a href="pmb/index.html" class="group relative bg-white p-8 rounded-3xl border border-slate-100 hover:border-blue-200 transition-all hover:shadow-2xl hover:shadow-blue-500/5">
+                <div class="w-14 h-14 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:bg-blue-600 group-hover:text-white transition-colors"><i class="fa-solid fa-user-plus"></i></div>
+                <h3 class="font-extrabold text-xl text-slate-900 mb-2">PMB Online</h3>
+                <p class="text-slate-500 text-sm mb-6 leading-relaxed">Pendaftaran siswa baru tahun ajaran 2026/2027. Akses terbuka untuk publik.</p>
+                <span class="text-blue-600 font-bold text-xs flex items-center gap-2">Mulai Daftar <i class="fa-solid fa-arrow-right"></i></span>
             </a>
-            <a href="login.html" class="bg-white p-6 rounded-2xl shadow-sm border hover:shadow-lg transition-all">
-                <div class="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center text-xl mb-4"><i class="fa-solid fa-chart-line"></i></div>
-                <h3 class="font-bold text-slate-800">SIMPEG</h3>
-                <p class="text-xs text-gray-500 mt-1">Data guru (Memerlukan Login).</p>
+
+            <!-- SIMPEG Card -->
+            <a href="login.html" class="group relative bg-white p-8 rounded-3xl border border-slate-100 hover:border-indigo-200 transition-all hover:shadow-2xl hover:shadow-indigo-500/5">
+                <div class="w-14 h-14 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:bg-indigo-600 group-hover:text-white transition-colors"><i class="fa-solid fa-id-card"></i></div>
+                <h3 class="font-extrabold text-slate-900 mb-2">SIMPEG</h3>
+                <p class="text-slate-500 text-sm mb-6 leading-relaxed">Manajemen kepegawaian untuk guru dan staf. Akses internal terbatas.</p>
+                <span class="text-indigo-600 font-bold text-xs flex items-center gap-2">Login Internal <i class="fa-solid fa-lock"></i></span>
             </a>
+
+            <!-- Angket Card -->
+            <a href="login.html" class="group relative bg-white p-8 rounded-3xl border border-slate-100 hover:border-purple-200 transition-all hover:shadow-2xl hover:shadow-purple-500/5">
+                <div class="w-14 h-14 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:bg-purple-600 group-hover:text-white transition-colors"><i class="fa-solid fa-clipboard-check"></i></div>
+                <h3 class="font-extrabold text-slate-900 mb-2">Angket Peminatan</h3>
+                <p class="text-slate-500 text-sm mb-6 leading-relaxed">Penelusuran minat bakat siswa untuk penjurusan kelas.</p>
+                <span class="text-purple-600 font-bold text-xs flex items-center gap-2">Masuk Angket <i class="fa-solid fa-arrow-right"></i></span>
+            </a>
+            
         </div>
     </main>
-    <footer class="text-center py-6 text-xs text-gray-400">© 2026 MANBA'USSALAM</footer>
+
+    <!-- Footer -->
+    <footer class="mt-auto border-t py-10 text-center text-slate-400 text-sm">
+        <p>© 2026 MAS Manba'ussalam. All rights reserved.</p>
+    </footer>
 </body>
 </html>
