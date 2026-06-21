@@ -11,86 +11,117 @@
         tailwind.config = {
             theme: {
                 extend: {
-                    colors: { primary: '#0B1F3B', accent: '#D4AF37', bgDark: '#F8FAFC' },
+                    colors: { primary: '#0B1F3B', accent: '#D4AF37', bgLight: '#F1F5F9' },
                     fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'] }
                 }
             }
         }
     </script>
 </head>
-<body class="bg-slate-50 min-h-screen flex flex-col font-sans">
+<body class="bg-bgLight min-h-screen flex flex-col font-sans">
 
-    <!-- Header (Navy) -->
+    <!-- TOOLBAR SIMULASI (Hanya muncul saat testing) -->
+    <div class="bg-slate-800 p-2 text-center text-[10px] text-white">
+        <span class="mr-4 font-bold text-accent">MODE SIMULASI ROLE:</span>
+        <button onclick="setRole('siswa')" class="mx-1 px-3 py-1 bg-white/10 rounded hover:bg-white/20">Siswa</button>
+        <button onclick="setRole('guru')" class="mx-1 px-3 py-1 bg-white/10 rounded hover:bg-white/20">Guru</button>
+        <button onclick="setRole('kepala')" class="mx-1 px-3 py-1 bg-white/10 rounded hover:bg-white/20">Kepala</button>
+        <button onclick="setRole('admin')" class="mx-1 px-3 py-1 bg-white/10 rounded hover:bg-white/20">Admin</button>
+    </div>
+
+    <!-- Header -->
     <nav class="bg-primary border-b border-white/10 sticky top-0 z-50">
         <div class="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 bg-accent text-primary rounded-xl flex items-center justify-center font-bold text-lg shadow-lg">M</div>
                 <h1 class="font-bold text-white tracking-wide text-lg">MANBA'USSALAM <span class="text-accent font-light">PORTAL</span></h1>
             </div>
-            <a href="login.html" class="flex items-center gap-2 text-white font-bold text-xs bg-white/10 hover:bg-white/20 px-6 py-2.5 rounded-full transition-all border border-white/10">
+            <a href="login.html" id="login-btn" class="flex items-center gap-2 text-white font-bold text-xs bg-white/10 hover:bg-white/20 px-6 py-2.5 rounded-full transition-all border border-white/10">
                 <i class="fa-solid fa-lock text-accent text-[10px]"></i>Login Admin
             </a>
         </div>
     </nav>
 
-    <!-- Hero Section (Navy - Konsisten dengan Header) -->
+    <!-- Hero -->
     <section class="bg-primary pt-12 pb-20 text-center relative overflow-hidden">
         <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5"></div>
         <div class="max-w-3xl mx-auto px-6 relative z-10">
-            <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-4 leading-snug">
-                Selamat Datang di Sistem Akademik <br/>
-                <span class="text-accent">MAS MANBA'USSALAM</span>
-            </h2>
-            <p class="text-slate-400 text-sm md:text-base leading-relaxed max-w-2xl mx-auto">
-                Pusat layanan digital madrasah untuk siswa, guru, dan alumni. Silakan pilih menu di bawah ini sesuai dengan kebutuhan Anda untuk memulai layanan yang Anda perlukan.
-            </p>
+            <h2 id="hero-title" class="text-3xl md:text-4xl font-extrabold text-white mb-4 leading-snug">Selamat Datang di Portal Akademik</h2>
+            <p id="hero-desc" class="text-slate-400 text-sm leading-relaxed max-w-2xl mx-auto">Memuat profil akses Anda...</p>
         </div>
     </section>
 
-    <!-- Grid Aplikasi (di atas bg-slate-50) -->
+    <!-- Menu Grid -->
     <main class="max-w-6xl mx-auto px-6 -mt-12 pb-20 flex-1">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div id="app-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             
-            <!-- PMB Card -->
-            <a href="pmb/index.html" class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:border-blue-400 hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300 transform hover:-translate-y-1">
+            <!-- Cards (ID harus unik untuk show/hide) -->
+            <a href="pmb/index.html" id="card-pmb" class="app-card bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:border-blue-500 transition-all">
                 <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center text-xl mb-5"><i class="fa-solid fa-user-plus"></i></div>
                 <h3 class="font-bold text-slate-800 mb-1">PMB Online</h3>
-                <p class="text-slate-500 text-xs mb-4">Pendaftaran siswa baru TA 2026/2027.</p>
-                <div class="text-blue-600 font-bold text-[11px] uppercase tracking-wider">Buka Layanan &rarr;</div>
+                <p class="text-slate-500 text-xs mb-4">Pendaftaran siswa baru.</p>
             </a>
 
-            <!-- SIMPEG Card -->
-            <a href="login.html" class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:border-indigo-400 hover:shadow-xl hover:shadow-indigo-500/10 transition-all duration-300 transform hover:-translate-y-1">
+            <a href="login.html" id="card-simpeg" class="app-card bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:border-indigo-500 transition-all">
                 <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center text-xl mb-5"><i class="fa-solid fa-id-card"></i></div>
                 <h3 class="font-bold text-slate-800 mb-1">SIMPEG</h3>
-                <p class="text-slate-500 text-xs mb-4">Data kepegawaian guru dan staf madrasah.</p>
-                <div class="text-indigo-600 font-bold text-[11px] uppercase tracking-wider">Akses Internal &rarr;</div>
+                <p class="text-slate-500 text-xs mb-4">Data kepegawaian guru/staf.</p>
             </a>
 
-            <!-- Angket Card -->
-            <a href="login.html" class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:border-purple-400 hover:shadow-xl hover:shadow-purple-500/10 transition-all duration-300 transform hover:-translate-y-1">
+            <a href="login.html" id="card-angket" class="app-card bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:border-purple-500 transition-all">
                 <div class="w-12 h-12 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center text-xl mb-5"><i class="fa-solid fa-clipboard-check"></i></div>
                 <h3 class="font-bold text-slate-800 mb-1">Angket Peminatan</h3>
-                <p class="text-slate-500 text-xs mb-4">Penelusuran minat bakat siswa baru.</p>
-                <div class="text-purple-600 font-bold text-[11px] uppercase tracking-wider">Mulai Angket &rarr;</div>
+                <p class="text-slate-500 text-xs mb-4">Penelusuran minat bakat.</p>
             </a>
 
-            <!-- Verifikasi Ijazah -->
-          <!-- Verifikasi Ijazah (Diperbarui href-nya) -->
-<a href="login.html" class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:border-emerald-400 hover:shadow-xl hover:shadow-emerald-500/10 transition-all duration-300 transform hover:-translate-y-1">
-    <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center text-xl mb-5"><i class="fa-solid fa-certificate"></i></div>
-    <h3 class="font-bold text-slate-800 mb-1">Verifikasi Ijazah</h3>
-    <p class="text-slate-500 text-xs mb-4">Validasi legalitas dokumen kelulusan.</p>
-    <div class="text-emerald-600 font-bold text-[11px] uppercase tracking-wider">Akses Internal &rarr;</div>
-</a>
-            
+            <a href="verifikasi/index.html" id="card-verifikasi" class="app-card bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:border-emerald-500 transition-all">
+                <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center text-xl mb-5"><i class="fa-solid fa-certificate"></i></div>
+                <h3 class="font-bold text-slate-800 mb-1">Verifikasi Ijazah</h3>
+                <p class="text-slate-500 text-xs mb-4">Validasi legalitas dokumen.</p>
+            </a>
+
+            <a href="#" id="card-admin-dashboard" class="app-card bg-slate-900 p-6 rounded-2xl shadow-sm border border-slate-700 hover:border-accent transition-all">
+                <div class="w-12 h-12 bg-accent/10 text-accent rounded-xl flex items-center justify-center text-xl mb-5"><i class="fa-solid fa-shield-halved"></i></div>
+                <h3 class="font-bold text-white mb-1">Admin Dashboard</h3>
+                <p class="text-slate-400 text-xs mb-4">Kontrol pusat ekosistem.</p>
+            </a>
         </div>
     </main>
 
-    <!-- Footer (Navy - Konsisten dengan Header/Hero) -->
-    <footer class="bg-primary py-10 text-center border-t border-white/5">
-        <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest">© 2026 MAS MANBA'USSALAM &bull; Digital Ecosystem</p>
-    </footer>
+    <script>
+        function setRole(role) {
+            localStorage.setItem('userRole', role);
+            updateUI();
+        }
 
+        function updateUI() {
+            const role = localStorage.getItem('userRole') || 'siswa';
+            const grid = document.getElementById('app-grid');
+            const allCards = document.querySelectorAll('.app-card');
+            allCards.forEach(c => c.classList.add('hidden'));
+
+            if (role === 'admin') {
+                allCards.forEach(c => c.classList.remove('hidden'));
+                document.getElementById('hero-title').innerText = "Selamat Datang, Admin!";
+                document.getElementById('hero-desc').innerText = "Anda memiliki akses penuh ke seluruh ekosistem.";
+            } else if (role === 'kepala') {
+                document.getElementById('card-simpeg').classList.remove('hidden');
+                document.getElementById('card-admin-dashboard').classList.remove('hidden');
+                document.getElementById('hero-title').innerText = "Selamat Datang, Bapak Kepala Madrasah";
+                document.getElementById('hero-desc').innerText = "Monitoring kinerja dan data madrasah terkini.";
+            } else if (role === 'guru') {
+                document.getElementById('card-simpeg').classList.remove('hidden');
+                document.getElementById('hero-title').innerText = "Selamat Datang, Bapak/Ibu Guru";
+                document.getElementById('hero-desc').innerText = "Akses portofolio dan data kepegawaian Anda.";
+            } else {
+                document.getElementById('card-pmb').classList.remove('hidden');
+                document.getElementById('card-angket').classList.remove('hidden');
+                document.getElementById('card-verifikasi').classList.remove('hidden');
+                document.getElementById('hero-title').innerText = "Selamat Datang di Sistem Akademik";
+                document.getElementById('hero-desc').innerText = "Pilih layanan yang Anda butuhkan.";
+            }
+        }
+        updateUI(); // Jalankan saat load
+    </script>
 </body>
 </html>
