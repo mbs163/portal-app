@@ -3,24 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Internal | MAS MANBA'USSALAM</title>
+    <title>Login | MAS MANBA'USSALAM</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: { primary: '#0B1F3B', accent: '#D4AF37' }
-                }
-            }
-        }
+        tailwind.config = { theme: { extend: { colors: { primary: '#0B1F3B', accent: '#D4AF37' } } } }
     </script>
 </head>
 <body class="bg-slate-50 font-sans min-h-screen flex items-center justify-center p-4">
 
     <!-- Container Utama -->
-    <div class="bg-white w-full max-w-4xl rounded-3xl shadow-2xl flex overflow-hidden border border-slate-100">
+    <div class="bg-white w-full max-w-4xl rounded-3xl shadow-2xl flex overflow-hidden border border-slate-100 min-h-[500px]">
         
         <!-- Left Side: Branding -->
         <div class="hidden md:flex w-1/2 bg-primary p-12 flex-col justify-between text-white relative overflow-hidden">
@@ -30,28 +24,32 @@
                 <h2 class="text-3xl font-extrabold mb-4">Sistem Akademik Terintegrasi</h2>
                 <p class="text-slate-300 text-sm leading-relaxed">Kelola administrasi, kepegawaian, dan data madrasah dengan sistem yang aman, cepat, dan modern.</p>
             </div>
-            <div class="relative z-10 text-xs text-slate-400 font-medium uppercase tracking-widest">
-                &copy; 2026 MAS MANBA'USSALAM
-            </div>
+            <div class="relative z-10 text-xs text-slate-400 font-medium uppercase tracking-widest">© 2026 MAS MANBA'USSALAM</div>
         </div>
 
-        <!-- Right Side: Login Form -->
+        <!-- Right Side: Login Form (Tabbed) -->
         <div class="w-full md:w-1/2 p-8 sm:p-12 flex flex-col justify-center">
-            <div class="mb-8">
-                <h3 class="text-2xl font-extrabold text-slate-900 mb-2">Selamat Datang Kembali</h3>
-                <p class="text-slate-500 text-sm">Masukkan kredensial Anda untuk melanjutkan.</p>
+            
+            <!-- TABS -->
+            <div class="flex gap-2 mb-8 bg-slate-100 p-1 rounded-xl">
+                <button id="btn-user" onclick="switchTab('user')" class="flex-1 py-3 text-sm font-bold rounded-lg transition-all bg-white text-primary shadow-sm">Akademik</button>
+                <button id="btn-admin" onclick="switchTab('admin')" class="flex-1 py-3 text-sm font-bold rounded-lg transition-all text-slate-500 hover:text-primary">Admin</button>
             </div>
 
-            <!-- HANYA SATU FORM INI SAJA -->
-            <form onsubmit="doLogin(event)" class="space-y-5">
-                <input type="text" id="user" required class="w-full p-4 border rounded-xl focus:ring-2 focus:ring-primary outline-none" placeholder="NISN / NIK / Username">
-                
-                <div id="password-container">
-                    <input type="date" id="pass-date" class="w-full p-4 border rounded-xl hidden" title="Pilih Tanggal Lahir">
-                    <input type="password" id="pass-text" class="w-full p-4 border rounded-xl" placeholder="Password">
-                </div>
+            <!-- FORM SISWA/GURU/KEPALA -->
+            <form id="form-user" onsubmit="handleLogin(event, 'user')" class="space-y-5 animate-in fade-in duration-500">
+                <h3 class="text-xl font-bold text-slate-900">Login Akademik</h3>
+                <input type="text" id="user-id" required class="w-full p-4 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary outline-none" placeholder="NISN / NIK">
+                <input type="date" id="user-pass" required class="w-full p-4 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary outline-none" title="Tanggal Lahir sebagai Password">
+                <button type="submit" class="w-full bg-primary text-white p-4 rounded-xl font-bold hover:bg-slate-950 transition-all">Masuk Sistem</button>
+            </form>
 
-                <button type="submit" class="w-full bg-primary text-white p-4 rounded-xl font-bold hover:bg-slate-900 transition-all">Masuk ke Sistem</button>
+            <!-- FORM ADMIN -->
+            <form id="form-admin" onsubmit="handleLogin(event, 'admin')" class="space-y-5 hidden animate-in fade-in duration-500">
+                <h3 class="text-xl font-bold text-slate-900">Login Admin</h3>
+                <input type="text" id="admin-user" required class="w-full p-4 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary outline-none" placeholder="Username Admin">
+                <input type="password" id="admin-pass" required class="w-full p-4 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary outline-none" placeholder="Password Khusus">
+                <button type="submit" class="w-full bg-accent text-primary p-4 rounded-xl font-bold hover:bg-yellow-500 transition-all">Login Administrator</button>
             </form>
 
             <div class="mt-8 text-center">
@@ -63,43 +61,30 @@
     </div>
 
     <script>
-        // Logika Toggle Password vs Date Picker
-        const userField = document.getElementById('user');
-        const passDate = document.getElementById('pass-date');
-        const passText = document.getElementById('pass-text');
+        function switchTab(tab) {
+            const formUser = document.getElementById('form-user');
+            const formAdmin = document.getElementById('form-admin');
+            const btnUser = document.getElementById('btn-user');
+            const btnAdmin = document.getElementById('btn-admin');
 
-        userField.addEventListener('input', () => {
-            const val = userField.value;
-            if (val.length >= 10) {
-                passDate.classList.remove('hidden');
-                passText.classList.add('hidden');
-                passDate.setAttribute('required', 'true');
-                passText.removeAttribute('required');
+            if (tab === 'admin') {
+                formUser.classList.add('hidden');
+                formAdmin.classList.remove('hidden');
+                btnAdmin.classList.add('bg-white', 'text-primary', 'shadow-sm');
+                btnUser.classList.remove('bg-white', 'text-primary', 'shadow-sm');
             } else {
-                passDate.classList.add('hidden');
-                passText.classList.remove('hidden');
-                passDate.removeAttribute('required');
-                passText.setAttribute('required', 'true');
+                formAdmin.classList.add('hidden');
+                formUser.classList.remove('hidden');
+                btnUser.classList.add('bg-white', 'text-primary', 'shadow-sm');
+                btnAdmin.classList.remove('bg-white', 'text-primary', 'shadow-sm');
             }
-        });
+        }
 
-        // Logika Login
-        function doLogin(e) {
+        function handleLogin(e, type) {
             e.preventDefault();
-            const user = userField.value;
-            // Ambil value dari input yang aktif saja
-            const pass = passDate.classList.contains('hidden') ? passText.value : passDate.value;
-
-            // Simulasi Database
-            if (user === 'siswa1' && pass === '2008-05-15') { // Contoh password tanggal lahir
-                localStorage.setItem('userRole', 'siswa');
-                window.location.href = 'index.html';
-            } else if (user === 'admin1' && pass === 'admin123') {
-                localStorage.setItem('userRole', 'admin');
-                window.location.href = 'index.html';
-            } else {
-                alert('Username atau Password salah!');
-            }
+            // Logika simulasi (Anda bisa kembangkan ke backend nanti)
+            alert('Proses Login sebagai: ' + type);
+            // Tambahkan redirect ke dashboard sesuai role di sini
         }
     </script>
 </body>
