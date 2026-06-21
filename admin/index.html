@@ -199,6 +199,29 @@
         // Atur link kembali ke halaman login melalui URL dinamis
         const GITHUB_USER = 'mbs163'; 
         document.getElementById('link-logout').href = `https://${GITHUB_USER}.github.io/portal-app/`;
+
+        // Cek siapa yang login saat halaman dibuka
+const userRole = localStorage.getItem('userRole'); // 'siswa', 'guru', 'kepala', 'admin'
+
+// Sembunyikan semua menu secara default
+const menuItems = document.querySelectorAll('.app-card');
+menuItems.forEach(card => card.classList.add('hidden'));
+
+// Tampilkan menu sesuai peran
+if (userRole === 'admin') {
+    // Admin lihat semua
+    menuItems.forEach(card => card.classList.remove('hidden'));
+} else if (userRole === 'kepala') {
+    document.getElementById('card-simpeg').classList.remove('hidden');
+    // Mungkin tambah kartu 'statistik'
+} else if (userRole === 'guru') {
+    document.getElementById('card-simpeg').classList.remove('hidden');
+} else {
+    // Siswa / Tamu
+    document.getElementById('card-pmb').classList.remove('hidden');
+    document.getElementById('card-verifikasi').classList.remove('hidden');
+}
     </script>
+    
 </body>
 </html>
