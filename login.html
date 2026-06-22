@@ -98,7 +98,32 @@
                 icon.innerText = "M";
             }
         }
-        function handleLogin(e, type) { e.preventDefault(); alert('Login ' + type + ' berhasil!'); }
+       async function handleLogin(e, type) {
+    e.preventDefault();
+    
+    // Ambil inputan
+    const user = type === 'admin' ? document.getElementById('admin-user').value : document.getElementById('user-id').value;
+    const pass = type === 'admin' ? document.getElementById('admin-pass').value : document.getElementById('user-pass').value;
+
+    const GAS_URL = "URL_WEB_APP_ANDA_DISINI"; // GANTI DENGAN URL YANG ANDA COPY TADI
+
+    // Kirim ke GAS
+    const response = await fetch(GAS_URL, {
+        method: "POST",
+        body: JSON.stringify({ username: user, password: pass })
+    });
+    
+    const result = await response.json();
+    
+    if (result.status === "success") {
+        localStorage.setItem('userRole', result.role);
+        localStorage.setItem('userName', result.nama);
+        alert("Selamat datang, " + result.nama);
+        window.location.href = 'index.html';
+    } else {
+        alert("Username atau Password salah!");
+    }
+}
     </script>
 </body>
 </html>
