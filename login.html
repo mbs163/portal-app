@@ -79,42 +79,42 @@
 
     <script>
         function switchTab(tab) {
-    // 1. Ambil elemen Form & Tombol Tab
-    const formUser = document.getElementById('form-user');
-    const formAdmin = document.getElementById('form-admin');
-    const btnUser = document.getElementById('btn-user');
-    const btnAdmin = document.getElementById('btn-admin');
-    
-    // 2. Ambil elemen teks panel kiri
-    const title = document.getElementById('brand-title');
-    const desc = document.getElementById('brand-desc');
-    const icon = document.getElementById('brand-icon');
+            // 1. Ambil elemen Form & Tombol Tab
+            const formUser = document.getElementById('form-user');
+            const formAdmin = document.getElementById('form-admin');
+            const btnUser = document.getElementById('btn-user');
+            const btnAdmin = document.getElementById('btn-admin');
+            
+            // 2. Ambil elemen teks panel kiri
+            const title = document.getElementById('brand-title');
+            const desc = document.getElementById('brand-desc');
+            const icon = document.getElementById('brand-icon');
 
-    if (tab === 'admin') {
-        // Ganti tampilan form & tombol
-        if(formUser) formUser.classList.add('hidden');
-        if(formAdmin) formAdmin.classList.remove('hidden');
-        if(btnAdmin) btnAdmin.classList.add('bg-white', 'text-primary', 'shadow-sm');
-        if(btnUser) btnUser.classList.remove('bg-white', 'text-primary', 'shadow-sm');
-        
-        // Ganti teks panel (HANYA JIKA ELEMENNYA ADA)
-        if(title) title.innerText = "Pusat Kendali Admin";
-        if(desc) desc.innerText = "Akses eksklusif untuk manajemen sistem, monitoring database, dan konfigurasi server pusat.";
-        if(icon) icon.innerText = "A";
-        
-    } else {
-        // Ganti tampilan form & tombol
-        if(formAdmin) formAdmin.classList.add('hidden');
-        if(formUser) formUser.classList.remove('hidden');
-        if(btnUser) btnUser.classList.add('bg-white', 'text-primary', 'shadow-sm');
-        if(btnAdmin) btnAdmin.classList.remove('bg-white', 'text-primary', 'shadow-sm');
+            if (tab === 'admin') {
+                // Ganti tampilan form & tombol
+                if(formUser) formUser.classList.add('hidden');
+                if(formAdmin) formAdmin.classList.remove('hidden');
+                if(btnAdmin) btnAdmin.classList.add('bg-white', 'text-primary', 'shadow-sm');
+                if(btnUser) btnUser.classList.remove('bg-white', 'text-primary', 'shadow-sm');
+                
+                // Ganti teks panel (HANYA JIKA ELEMENNYA ADA)
+                if(title) title.innerText = "Pusat Kendali Admin";
+                if(desc) desc.innerText = "Akses eksklusif untuk manajemen sistem, monitoring database, dan konfigurasi server pusat.";
+                if(icon) icon.innerText = "A";
+                
+            } else {
+                // Ganti tampilan form & tombol
+                if(formAdmin) formAdmin.classList.add('hidden');
+                if(formUser) formUser.classList.remove('hidden');
+                if(btnUser) btnUser.classList.add('bg-white', 'text-primary', 'shadow-sm');
+                if(btnAdmin) btnAdmin.classList.remove('bg-white', 'text-primary', 'shadow-sm');
 
-        // Ganti teks panel (HANYA JIKA ELEMENNYA ADA)
-        if(title) title.innerText = "Sistem Akademik Terintegrasi";
-        if(desc) desc.innerText = "Kelola administrasi, kepegawaian, dan data madrasah dengan sistem yang aman, cepat, dan modern.";
-        if(icon) icon.innerText = "M";
-    }
-}
+                // Ganti teks panel (HANYA JIKA ELEMENNYA ADA)
+                if(title) title.innerText = "Sistem Akademik Terintegrasi";
+                if(desc) desc.innerText = "Kelola administrasi, kepegawaian, dan data madrasah dengan sistem yang aman, cepat, dan modern.";
+                if(icon) icon.innerText = "M";
+            }
+        }
 
         async function handleLogin(e, type) {
             e.preventDefault();
@@ -128,9 +128,8 @@
                 const user = type === 'admin' ? document.getElementById('admin-user').value : document.getElementById('user-id').value;
                 const pass = type === 'admin' ? document.getElementById('admin-pass').value : document.getElementById('user-pass').value;
 
-                // ⚠️ JANGAN LUPA: Ganti URL di bawah ini dengan URL Web App Apps Script Anda!
-                const GAS_URL = "https://script.google.com/macros/s/AKfycbw_6Q-M6_pvGLUZH4IFtefxa3iwStdhyD7nii4lFIMAyYaILCfnbLOp6DnuWChG2HRmpw/exec
-                    "; 
+                // URL SUDAH DIRAPIKAN MENJADI SATU BARIS LURUS
+                const GAS_URL = "https://script.google.com/macros/s/AKfycbw_6Q-M6_pvGLUZH4IFtefxa3iwStdhyD7nii4lFIMAyYaILCfnbLOp6DnuWChG2HRmpw/exec"; 
 
                 const response = await fetch(GAS_URL, {
                     method: "POST",
