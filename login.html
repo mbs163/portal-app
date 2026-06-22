@@ -142,9 +142,17 @@
                         timer: 2000,
                         timerProgressBar: true,
                         backdrop: `rgba(11, 31, 59, 0.4)`
-                    }).then(() => {
-                        window.location.href = 'index.html';
-                    });
+                   }).then(() => {
+    // POLISI LALU LINTAS: Cek perannya
+    if (result.role === 'admin') {
+        // Jika Admin, lempar ke repo Web Portal
+        // ⚠️ GANTI [username-github-anda] DENGAN USERNAME ASLI ANDA
+        window.location.href = 'https://[username-github-anda].github.io/web-portal/admin/index.html';
+    } else {
+        // Jika Siswa/Guru, masuk ke Portal Akademik
+        window.location.href = 'index.html'; 
+    }
+});
 
                 } else {
                     Swal.fire({
