@@ -11,7 +11,7 @@
         tailwind.config = { theme: { extend: { colors: { primary: '#0B1F3B', accent: '#D4AF37' } } } }
     </script>
 </head>
-<<body class="bg-slate-50 font-sans min-h-screen flex flex-col items-center justify-center p-4">
+<body class="bg-slate-50 font-sans min-h-screen flex flex-col items-center justify-center p-4">
 
     <!-- Container Utama: my-auto memastikan box selalu di tengah vertikal -->
     <div class="bg-white w-full max-w-4xl rounded-3xl shadow-2xl flex overflow-hidden border border-slate-100 min-h-[500px] my-auto">
@@ -40,7 +40,10 @@
                 <button id="btn-user" onclick="switchTab('user')" class="flex-1 py-3 text-sm font-bold rounded-lg transition-all bg-white text-primary shadow-sm">Akademik</button>
                 <button id="btn-admin" onclick="switchTab('admin')" class="flex-1 py-3 text-sm font-bold rounded-lg transition-all text-slate-500 hover:text-primary">Admin</button>
             </div>
-
+<div id="loading-overlay" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] hidden flex-col items-center justify-center text-white transition-all">
+    <i class="fa-solid fa-circle-notch fa-spin text-5xl text-accent mb-4"></i>
+    <p class="font-bold tracking-widest uppercase text-sm animate-pulse">Memverifikasi Kredensial...</p>
+</div>
             <!-- Form Akademik -->
             <form id="form-user" onsubmit="handleLogin(event, 'user')" class="space-y-5 animate-in fade-in duration-500">
                 <h3 class="text-xl font-bold text-slate-900">Login Akademik</h3>
@@ -101,27 +104,46 @@
        async function handleLogin(e, type) {
     e.preventDefault();
     
-    // Ambil inputan
-    const user = type === 'admin' ? document.getElementById('admin-user').value : document.getElementById('user-id').value;
-    const pass = type === 'admin' ? document.getElementById('admin-pass').value : document.getElementById('user-pass').value;
+    // 1. Tampilkan Layar Loading
+    const overlay = document.getElementById('loading-overlay');
+    overlay.classList.remove('hidden');
+    overlay.classList.add('flex');
 
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbw_6Q-M6_pvGLUZH4IFtefxa3iwStdhyD7nii4lFIMAyYaILCfnbLOp6DnuWChG2HRmpw/exec"; // GANTI DENGAN URL YANG ANDA COPY TADI
+    try {
+        // Ambil inputan
+        const user = type === 'admin' ? document.getElementById('admin-user').value : document.getElementById('user-id').value;
+        const pass = type === 'admin' ? document.getElementById('admin-pass').value : document.getElementById('user-pass').value;
 
-    // Kirim ke GAS
-    const response = await fetch(GAS_URL, {
-        method: "POST",
-        body: JSON.stringify({ username: user, password: pass })
-    });
-    
-    const result = await response.json();
-    
-    if (result.status === "success") {
-        localStorage.setItem('userRole', result.role);
-        localStorage.setItem('userName', result.nama);
-        alert("Selamat datang, " + result.nama);
-        window.location.href = 'index.html';
-    } else {
-        alert("Username atau Password salah!");
+        // PASTIKAN URL GAS ANDA SUDAH BENAR DI SINI
+        const GAS_URL = "URL_WEB_APP_ANDA_DISINI"; 
+
+        // Kirim ke GAS
+        const response = await fetch(GAS_URL, {
+            method: "POST",
+            body: JSON.stringify({ username: user, password: pass })
+        });
+        
+        const result = await response.json();
+        
+        // 2. Cek Hasilnya
+        if (result.status === "success") {
+            // Simpan data
+            localStorage.setItem('userRole', result.role);
+            localStorage.setItem('userName', result.nama);
+            
+            // Redirect mulus ke dashboard (tanpa alert agar elegan)
+            window.location.href = 'index.html';
+        } else {
+            // Jika salah, matikan loading dan beri peringatan
+            overlay.classList.add('hidden');
+            overlay.classList.remove('flex');
+            alert("Akses Ditolak: Username atau Password salah!");
+        }
+    } catch (error) {
+        // Jika internet putus atau error jaringan
+        overlay.classList.add('hidden');
+        overlay.classList.remove('flex');
+        alert("Terjadi kesalahan jaringan. Gagal terhubung ke server.");
     }
 }
     </script>
