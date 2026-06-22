@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pendaftaran Murid Baru | MAS MANBA'USSALAM</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = { theme: { extend: { colors: { primary: '#0B1F3B', accent: '#D4AF37' } } } }
+    </script>
+</head>
+<body class="bg-slate-50 font-sans min-h-screen flex flex-col items-center py-10 px-4">
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] hidden flex-col items-center justify-center text-white transition-all">
+        <i class="fa-solid fa-circle-notch fa-spin text-5xl text-accent mb-4"></i>
+        <p class="font-bold tracking-widest uppercase text-sm animate-pulse">Mengirim Data Pendaftaran...</p>
+    </div>
+
+    <!-- Container Utama -->
+    <div class="bg-white w-full max-w-3xl rounded-3xl shadow-xl overflow-hidden border border-slate-100">
+        
+        <!-- Header PMB -->
+        <div class="bg-primary p-8 text-center text-white relative overflow-hidden">
+            <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+            <div class="relative z-10 flex justify-center mb-4">
+                <div class="w-16 h-16 bg-accent text-primary rounded-2xl flex items-center justify-center font-bold text-3xl shadow-lg">M</div>
+            </div>
+            <h2 class="relative z-10 text-2xl md:text-3xl font-extrabold mb-2">Formulir Pendaftaran Siswa Baru</h2>
+            <p class="relative z-10 text-slate-300 text-sm">Tahun Ajaran 2026/2027 &bull; MAS MANBA'USSALAM</p>
+        </div>
+
+        <!-- Form PMB -->
+        <div class="p-8 md:p-12">
+            <form id="form-pmb" onsubmit="submitPMB(event)" class="space-y-6">
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- NISN -->
+                    <div class="space-y-2">
+                        <label class="text-sm font-bold text-slate-700">NISN <span class="text-red-500">*</span></label>
+                        <input type="text" id="nisn" required class="w-full p-4 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary outline-none bg-slate-50 focus:bg-white transition-colors" placeholder="Masukkan 10 digit NISN">
+                    </div>
+                    <!-- Nama Lengkap -->
+                    <div class="space-y-2">
+                        <label class="text-sm font-bold text-slate-700">Nama Lengkap <span class="text-red-500">*</span></label>
+                        <input type="text" id="nama" required class="w-full p-4 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary outline-none bg-slate-50 focus:bg-white transition-colors" placeholder="Sesuai Ijazah terakhir">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Tempat Lahir -->
+                    <div class="space-y-2">
+                        <label class="text-sm font-bold text-slate-700">Tempat Lahir <span class="text-red-500">*</span></label>
+                        <input type="text" id="tempat_lahir" required class="w-full p-4 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary outline-none bg-slate-50 focus:bg-white transition-colors" placeholder="Contoh: Serang">
+                    </div>
+                    <!-- Tanggal Lahir -->
+                    <div class="space-y-2">
+                        <label class="text-sm font-bold text-slate-700">Tanggal Lahir <span class="text-red-500">*</span></label>
+                        <input type="date" id="tanggal_lahir" required class="w-full p-4 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary outline-none bg-slate-50 focus:bg-white transition-colors">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Asal Sekolah -->
+                    <div class="space-y-2">
+                        <label class="text-sm font-bold text-slate-700">Asal Sekolah (SMP/MTs) <span class="text-red-500">*</span></label>
+                        <input type="text" id="asal_sekolah" required class="w-full p-4 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary outline-none bg-slate-50 focus:bg-white transition-colors" placeholder="Contoh: MTs Negeri 1">
+                    </div>
+                    <!-- Nomor HP / WA -->
+                    <div class="space-y-2">
+                        <label class="text-sm font-bold text-slate-700">Nomor HP / WhatsApp <span class="text-red-500">*</span></label>
+                        <input type="tel" id="no_hp" required class="w-full p-4 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary outline-none bg-slate-50 focus:bg-white transition-colors" placeholder="08xxxxxxxxxx">
+                    </div>
+                </div>
+
+                <div class="pt-6 border-t border-slate-100">
+                    <button type="submit" class="w-full bg-accent text-primary p-4 rounded-xl font-extrabold text-lg hover:bg-yellow-500 shadow-xl shadow-accent/20 transition-all">
+                        Kirim Formulir Pendaftaran <i class="fa-solid fa-paper-plane ml-2"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-8 text-center text-slate-400 text-xs font-semibold uppercase tracking-widest">
+        &copy; 2026 MAS MANBA'USSALAM &bull; PMB Online
+    </footer>
+
+    <script>
+        async function submitPMB(e) {
+            e.preventDefault();
+            
+            // 1. Munculkan Layar Loading
+            const overlay = document.getElementById('loading-overlay');
+            overlay.classList.remove('hidden');
+            overlay.classList.add('flex');
+
+            try {
+                // Kumpulkan data dari form
+                const payload = {
+                    nisn: document.getElementById('nisn').value,
+                    nama: document.getElementById('nama').value,
+                    tempat_lahir: document.getElementById('tempat_lahir').value,
+                    tanggal_lahir: document.getElementById('tanggal_lahir').value,
+                    asal_sekolah: document.getElementById('asal_sekolah').value,
+                    no_hp: document.getElementById('no_hp').value
+                };
+
+                // ⚠️ JANGAN LUPA: Masukkan URL Web App GAS Anda di sini!
+                const GAS_URL = "https://script.google.com/macros/s/AKfycbw_6Q-M6_pvGLUZH4IFtefxa3iwStdhyD7nii4lFIMAyYaILCfnbLOp6DnuWChG2HRmpw/exec"; 
+
+                // Kirim ke backend
+                const response = await fetch(GAS_URL, {
+                    method: "POST",
+                    body: JSON.stringify(payload)
+                });
+                
+                const result = await response.json();
+                
+                // Matikan loading
+                overlay.classList.add('hidden');
+                overlay.classList.remove('flex');
+                
+                if (result.status === "success") {
+                    // SweetAlert Sukses
+                    Swal.fire({
+                        title: 'Pendaftaran Berhasil!',
+                        text: 'Data Anda telah tercatat di sistem kami. Panitia akan segera menghubungi Anda melalui WhatsApp.',
+                        icon: 'success',
+                        iconColor: '#D4AF37',
+                        confirmButtonText: 'Selesai',
+                        confirmButtonColor: '#0B1F3B',
+                        backdrop: `rgba(11, 31, 59, 0.4)`
+                    }).then(() => {
+                        document.getElementById('form-pmb').reset(); // Kosongkan form setelah sukses
+                    });
+                } else {
+                    Swal.fire({ title: 'Gagal Menyimpan!', text: 'Terjadi kesalahan sistem.', icon: 'error', confirmButtonColor: '#0B1F3B' });
+                }
+            } catch (error) {
+                overlay.classList.add('hidden');
+                overlay.classList.remove('flex');
+                Swal.fire({ title: 'Koneksi Gagal!', text: 'Pastikan internet Anda stabil atau URL sistem valid.', icon: 'warning', confirmButtonColor: '#0B1F3B' });
+            }
+        }
+    </script>
+</body>
+</html>
