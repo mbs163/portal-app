@@ -14,41 +14,34 @@
 </head>
 <body class="bg-slate-50 font-sans min-h-screen flex flex-col items-center justify-center p-4">
 
-    <!-- Loading Overlay (Dipindah ke sini agar struktur lebih rapi) -->
     <div id="loading-overlay" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] hidden flex-col items-center justify-center text-white transition-all">
         <i class="fa-solid fa-circle-notch fa-spin text-5xl text-accent mb-4"></i>
         <p class="font-bold tracking-widest uppercase text-sm animate-pulse">Memverifikasi Kredensial...</p>
     </div>
 
-    <!-- Container Utama: my-auto memastikan box selalu di tengah vertikal -->
     <div class="bg-white w-full max-w-4xl rounded-3xl shadow-2xl flex overflow-hidden border border-slate-100 min-h-[500px] my-auto">
         
-        <!-- Left Side: Dynamic Branding (Hanya Desktop) -->
         <div id="brand-panel" class="hidden md:flex w-1/2 bg-primary p-12 flex-col justify-between text-white relative overflow-hidden transition-all duration-500">
             <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
             <div class="relative z-10">
                 <div id="brand-icon" class="w-12 h-12 bg-accent text-primary rounded-xl flex items-center justify-center font-bold text-xl mb-6">M</div>
-                <h2 id="brand-title" class="text-3xl font-extrabold mb-4">Sistem Akademik Terintegrasi</h2>
+                <h2 id="brand-title" class="text-3xl font-extrabold mb-4">Sistem Academic Terintegrasi</h2>
                 <p id="brand-desc" class="text-slate-300 text-sm leading-relaxed">Kelola administrasi, kepegawaian, dan data madrasah dengan sistem yang aman, cepat, dan modern.</p>
             </div>
             <div class="relative z-10 text-xs text-slate-400 font-medium uppercase tracking-widest">&copy; 2026 MAS MANBA'USSALAM</div>
         </div>
 
-        <!-- Right Side: Login Form -->
         <div class="w-full md:w-1/2 p-8 sm:p-12 flex flex-col justify-center">
             
-            <!-- Mobile Logo (Muncul hanya di Mobile) -->
             <div class="md:hidden flex justify-center mb-6">
                 <div class="w-14 h-14 bg-primary text-accent rounded-2xl flex items-center justify-center font-bold text-2xl shadow-lg">M</div>
             </div>
 
-            <!-- TABS -->
             <div class="flex gap-2 mb-8 bg-slate-100 p-1 rounded-xl">
                 <button id="btn-user" onclick="switchTab('user')" class="flex-1 py-3 text-sm font-bold rounded-lg transition-all bg-white text-primary shadow-sm">Akademik</button>
                 <button id="btn-admin" onclick="switchTab('admin')" class="flex-1 py-3 text-sm font-bold rounded-lg transition-all text-slate-500 hover:text-primary">Admin</button>
             </div>
 
-            <!-- Form Akademik -->
             <form id="form-user" onsubmit="handleLogin(event, 'user')" class="space-y-5 animate-in fade-in duration-500">
                 <h3 class="text-xl font-bold text-slate-900">Login Akademik</h3>
                 <input type="text" id="user-id" required class="w-full p-4 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary outline-none" placeholder="NISN / NIK">
@@ -56,7 +49,6 @@
                 <button type="submit" class="w-full bg-primary text-white p-4 rounded-xl font-bold hover:bg-slate-950 transition-all">Masuk Sistem</button>
             </form>
 
-            <!-- Form Admin -->
             <form id="form-admin" onsubmit="handleLogin(event, 'admin')" class="space-y-5 hidden animate-in fade-in duration-500">
                 <h3 class="text-xl font-bold text-slate-900">Login Admin</h3>
                 <input type="text" id="admin-user" required class="w-full p-4 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary outline-none" placeholder="Username">
@@ -72,44 +64,37 @@
         </div>
     </div>
 
-    <!-- Footer: mt-auto memastikan footer selalu di bawah dengan jarak yang pas -->
     <footer class="mt-auto pt-4 text-center text-slate-400 text-[10px] font-semibold uppercase tracking-widest pb-4">
         &copy; 2026 MAS MANBA'USSALAM &bull; Digital Ecosystem
     </footer>
 
     <script>
         function switchTab(tab) {
-            // 1. Ambil elemen Form & Tombol Tab
             const formUser = document.getElementById('form-user');
             const formAdmin = document.getElementById('form-admin');
             const btnUser = document.getElementById('btn-user');
             const btnAdmin = document.getElementById('btn-admin');
             
-            // 2. Ambil elemen teks panel kiri
             const title = document.getElementById('brand-title');
             const desc = document.getElementById('brand-desc');
             const icon = document.getElementById('brand-icon');
 
             if (tab === 'admin') {
-                // Ganti tampilan form & tombol
                 if(formUser) formUser.classList.add('hidden');
                 if(formAdmin) formAdmin.classList.remove('hidden');
                 if(btnAdmin) btnAdmin.classList.add('bg-white', 'text-primary', 'shadow-sm');
                 if(btnUser) btnUser.classList.remove('bg-white', 'text-primary', 'shadow-sm');
                 
-                // Ganti teks panel (HANYA JIKA ELEMENNYA ADA)
                 if(title) title.innerText = "Pusat Kendali Admin";
                 if(desc) desc.innerText = "Akses eksklusif untuk manajemen sistem, monitoring database, dan konfigurasi server pusat.";
                 if(icon) icon.innerText = "A";
                 
             } else {
-                // Ganti tampilan form & tombol
                 if(formAdmin) formAdmin.classList.add('hidden');
                 if(formUser) formUser.classList.remove('hidden');
                 if(btnUser) btnUser.classList.add('bg-white', 'text-primary', 'shadow-sm');
                 if(btnAdmin) btnAdmin.classList.remove('bg-white', 'text-primary', 'shadow-sm');
 
-                // Ganti teks panel (HANYA JIKA ELEMENNYA ADA)
                 if(title) title.innerText = "Sistem Akademik Terintegrasi";
                 if(desc) desc.innerText = "Kelola administrasi, kepegawaian, dan data madrasah dengan sistem yang aman, cepat, dan modern.";
                 if(icon) icon.innerText = "M";
@@ -119,16 +104,17 @@
         async function handleLogin(e, type) {
             e.preventDefault();
             
-            // 1. Tampilkan Layar Loading
             const overlay = document.getElementById('loading-overlay');
-            overlay.classList.remove('hidden');
-            overlay.classList.add('flex');
+            if(overlay) {
+                overlay.classList.remove('hidden');
+                overlay.classList.add('flex');
+            }
 
             try {
                 const user = type === 'admin' ? document.getElementById('admin-user').value : document.getElementById('user-id').value;
                 const pass = type === 'admin' ? document.getElementById('admin-pass').value : document.getElementById('user-pass').value;
 
-                // URL SUDAH DIRAPIKAN MENJADI SATU BARIS LURUS
+                // URL Google Apps Script yang sudah lurus satu baris sempurna
                 const GAS_URL = "https://script.google.com/macros/s/AKfycbw_6Q-M6_pvGLUZH4IFtefxa3iwStdhyD7nii4lFIMAyYaILCfnbLOp6DnuWChG2HRmpw/exec"; 
 
                 const response = await fetch(GAS_URL, {
@@ -138,45 +124,43 @@
                 
                 const result = await response.json();
                 
-                // Matikan loading screen sebelum memunculkan SweetAlert
-                overlay.classList.add('hidden');
-                overlay.classList.remove('flex');
+                if(overlay) {
+                    overlay.classList.add('hidden');
+                    overlay.classList.remove('flex');
+                }
                 
                 if (result.status === "success") {
-                    // Simpan data ke memori
                     localStorage.setItem('userRole', result.role);
                     localStorage.setItem('userName', result.nama);
                     
-                    // SweetAlert Sukses
                     Swal.fire({
                         title: 'Akses Diberikan!',
                         text: 'Selamat datang kembali, ' + result.nama,
                         icon: 'success',
-                        iconColor: '#D4AF37', // Aksen warna Gold
+                        iconColor: '#D4AF37',
                         showConfirmButton: false,
                         timer: 2000,
                         timerProgressBar: true,
-                        backdrop: `rgba(11, 31, 59, 0.4)` // Overlay warna Navy transparan
+                        backdrop: `rgba(11, 31, 59, 0.4)`
                     }).then(() => {
-                        window.location.href = 'index.html'; // Redirect setelah 2 detik
+                        window.location.href = 'index.html';
                     });
 
                 } else {
-                    // SweetAlert Gagal (Kredensial Salah)
                     Swal.fire({
                         title: 'Akses Ditolak!',
                         text: 'NISN/NIK/Username atau Password tidak sesuai.',
                         icon: 'error',
                         confirmButtonText: 'Coba Lagi',
-                        confirmButtonColor: '#0B1F3B' // Tombol warna Navy
+                        confirmButtonColor: '#0B1F3B'
                     });
                 }
             } catch (error) {
-                // Matikan loading screen
-                overlay.classList.add('hidden');
-                overlay.classList.remove('flex');
+                if(overlay) {
+                    overlay.classList.add('hidden');
+                    overlay.classList.remove('flex');
+                }
                 
-                // SweetAlert Error Jaringan
                 Swal.fire({
                     title: 'Koneksi Gagal!',
                     text: 'Terjadi kesalahan jaringan atau server tidak merespons. Pastikan URL sistem sudah valid.',
