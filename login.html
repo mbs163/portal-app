@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login | MAS MANBA'USSALAM</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
@@ -12,6 +13,12 @@
     </script>
 </head>
 <body class="bg-slate-50 font-sans min-h-screen flex flex-col items-center justify-center p-4">
+
+    <!-- Loading Overlay (Dipindah ke sini agar struktur lebih rapi) -->
+    <div id="loading-overlay" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] hidden flex-col items-center justify-center text-white transition-all">
+        <i class="fa-solid fa-circle-notch fa-spin text-5xl text-accent mb-4"></i>
+        <p class="font-bold tracking-widest uppercase text-sm animate-pulse">Memverifikasi Kredensial...</p>
+    </div>
 
     <!-- Container Utama: my-auto memastikan box selalu di tengah vertikal -->
     <div class="bg-white w-full max-w-4xl rounded-3xl shadow-2xl flex overflow-hidden border border-slate-100 min-h-[500px] my-auto">
@@ -40,10 +47,7 @@
                 <button id="btn-user" onclick="switchTab('user')" class="flex-1 py-3 text-sm font-bold rounded-lg transition-all bg-white text-primary shadow-sm">Akademik</button>
                 <button id="btn-admin" onclick="switchTab('admin')" class="flex-1 py-3 text-sm font-bold rounded-lg transition-all text-slate-500 hover:text-primary">Admin</button>
             </div>
-<div id="loading-overlay" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] hidden flex-col items-center justify-center text-white transition-all">
-    <i class="fa-solid fa-circle-notch fa-spin text-5xl text-accent mb-4"></i>
-    <p class="font-bold tracking-widest uppercase text-sm animate-pulse">Memverifikasi Kredensial...</p>
-</div>
+
             <!-- Form Akademik -->
             <form id="form-user" onsubmit="handleLogin(event, 'user')" class="space-y-5 animate-in fade-in duration-500">
                 <h3 class="text-xl font-bold text-slate-900">Login Akademik</h3>
@@ -101,51 +105,77 @@
                 icon.innerText = "M";
             }
         }
-       async function handleLogin(e, type) {
-    e.preventDefault();
-    
-    // 1. Tampilkan Layar Loading
-    const overlay = document.getElementById('loading-overlay');
-    overlay.classList.remove('hidden');
-    overlay.classList.add('flex');
 
-    try {
-        // Ambil inputan
-        const user = type === 'admin' ? document.getElementById('admin-user').value : document.getElementById('user-id').value;
-        const pass = type === 'admin' ? document.getElementById('admin-pass').value : document.getElementById('user-pass').value;
-
-        // PASTIKAN URL GAS ANDA SUDAH BENAR DI SINI
-        const GAS_URL = "URL_WEB_APP_ANDA_DISINI"; 
-
-        // Kirim ke GAS
-        const response = await fetch(GAS_URL, {
-            method: "POST",
-            body: JSON.stringify({ username: user, password: pass })
-        });
-        
-        const result = await response.json();
-        
-        // 2. Cek Hasilnya
-        if (result.status === "success") {
-            // Simpan data
-            localStorage.setItem('userRole', result.role);
-            localStorage.setItem('userName', result.nama);
+        async function handleLogin(e, type) {
+            e.preventDefault();
             
-            // Redirect mulus ke dashboard (tanpa alert agar elegan)
-            window.location.href = 'index.html';
-        } else {
-            // Jika salah, matikan loading dan beri peringatan
-            overlay.classList.add('hidden');
-            overlay.classList.remove('flex');
-            alert("Akses Ditolak: Username atau Password salah!");
+            // 1. Tampilkan Layar Loading
+            const overlay = document.getElementById('loading-overlay');
+            overlay.classList.remove('hidden');
+            overlay.classList.add('flex');
+
+            try {
+                const user = type === 'admin' ? document.getElementById('admin-user').value : document.getElementById('user-id').value;
+                const pass = type === 'admin' ? document.getElementById('admin-pass').value : document.getElementById('user-pass').value;
+
+                // ⚠️ JANGAN LUPA: Ganti URL di bawah ini dengan URL Web App Apps Script Anda!
+                const GAS_URL = "URL_WEB_APP_ANDA_DISINI"; 
+
+                const response = await fetch(GAS_URL, {
+                    method: "POST",
+                    body: JSON.stringify({ username: user, password: pass })
+                });
+                
+                const result = await response.json();
+                
+                // Matikan loading screen sebelum memunculkan SweetAlert
+                overlay.classList.add('hidden');
+                overlay.classList.remove('flex');
+                
+                if (result.status === "success") {
+                    // Simpan data ke memori
+                    localStorage.setItem('userRole', result.role);
+                    localStorage.setItem('userName', result.nama);
+                    
+                    // SweetAlert Sukses
+                    Swal.fire({
+                        title: 'Akses Diberikan!',
+                        text: 'Selamat datang kembali, ' + result.nama,
+                        icon: 'success',
+                        iconColor: '#D4AF37', // Aksen warna Gold
+                        showConfirmButton: false,
+                        timer: 2000,
+                        timerProgressBar: true,
+                        backdrop: `rgba(11, 31, 59, 0.4)` // Overlay warna Navy transparan
+                    }).then(() => {
+                        window.location.href = 'index.html'; // Redirect setelah 2 detik
+                    });
+
+                } else {
+                    // SweetAlert Gagal (Kredensial Salah)
+                    Swal.fire({
+                        title: 'Akses Ditolak!',
+                        text: 'NISN/NIK/Username atau Password tidak sesuai.',
+                        icon: 'error',
+                        confirmButtonText: 'Coba Lagi',
+                        confirmButtonColor: '#0B1F3B' // Tombol warna Navy
+                    });
+                }
+            } catch (error) {
+                // Matikan loading screen
+                overlay.classList.add('hidden');
+                overlay.classList.remove('flex');
+                
+                // SweetAlert Error Jaringan
+                Swal.fire({
+                    title: 'Koneksi Gagal!',
+                    text: 'Terjadi kesalahan jaringan atau server tidak merespons. Pastikan URL sistem sudah valid.',
+                    icon: 'warning',
+                    confirmButtonText: 'Tutup',
+                    confirmButtonColor: '#0B1F3B'
+                });
+            }
         }
-    } catch (error) {
-        // Jika internet putus atau error jaringan
-        overlay.classList.add('hidden');
-        overlay.classList.remove('flex');
-        alert("Terjadi kesalahan jaringan. Gagal terhubung ke server.");
-    }
-}
     </script>
 </body>
 </html>
