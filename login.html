@@ -119,7 +119,8 @@
                 const pass = type === 'admin' ? document.getElementById('admin-pass').value : document.getElementById('user-pass').value;
 
                 // ⚠️ JANGAN LUPA: Ganti URL di bawah ini dengan URL Web App Apps Script Anda!
-                const GAS_URL = "https://script.google.com/macros/s/AKfycbw_6Q-M6_pvGLUZH4IFtefxa3iwStdhyD7nii4lFIMAyYaILCfnbLOp6DnuWChG2HRmpw/exec"; 
+                const GAS_URL = "https://script.google.com/macros/s/AKfycbw_6Q-M6_pvGLUZH4IFtefxa3iwStdhyD7nii4lFIMAyYaILCfnbLOp6DnuWChG2HRmpw/exec
+                    "; 
 
                 const response = await fetch(GAS_URL, {
                     method: "POST",
