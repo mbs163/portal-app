@@ -22,13 +22,11 @@
             .print-combine-alamat { display: block !important; }
             .grid-alamat-inputs { display: none !important; }
         }
-        /* Loader kecil untuk dropdown wilayah */
         .select-loading { background: url('https://cdnjs.cloudflare.com/ajax/libs/galleriffic/2.0/css/loader.gif') no-repeat right 10px center; background-size: 16px; }
     </style>
 </head>
 <body class="bg-slate-50 min-h-screen text-slate-800 font-sans">
 
-    <!-- Navbar -->
     <nav class="bg-primary text-white p-4 shadow-md print:hidden">
         <div class="max-w-4xl mx-auto flex justify-between items-center">
             <div class="font-bold text-lg flex items-center gap-2">
@@ -43,7 +41,6 @@
 
     <div class="max-w-4xl mx-auto p-4 md:p-6 mt-4">
         
-        <!-- HEADER STATUS BANNER -->
         <div class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-slate-200 mb-6 relative">
             <div class="hidden print:block text-center border-b-2 border-black pb-4 mb-4">
                 <h2 class="text-2xl font-bold uppercase">Bukti Pendaftaran Peserta Didik Baru</h2>
@@ -66,10 +63,8 @@
             </div>
         </div>
 
-        <!-- MAIN DASHBOARD -->
         <div id="main-content" class="hidden">
             
-            <!-- STEPPER INDICATOR -->
             <div class="step-indicator-container flex items-center justify-between mb-8 relative px-4">
                 <div class="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-slate-200 -z-10 rounded-full"></div>
                 <div class="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-primary -z-10 rounded-full transition-all duration-300" id="progress-bar" style="width: 0%"></div>
@@ -88,14 +83,11 @@
                 </div>
             </div>
 
-            <!-- FORM STEPS -->
             <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-slate-100">
                 
-                <!-- STEP 1: DATA PRIBADI -->
                 <div id="step-1" class="form-step animate-in fade-in duration-300">
                     <h3 class="text-xl font-bold text-primary mb-4 border-b pb-2">Data Pribadi Calon Siswa</h3>
                     
-                    <!-- DATA AWAL (TERKUNCI) -->
                     <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 mb-6 relative">
                         <div class="absolute top-3 right-3 text-xs font-bold bg-slate-200 text-slate-500 px-2 py-1 rounded-md no-print"><i class="fa-solid fa-lock mr-1"></i> Terkunci</div>
                         <h4 class="text-sm font-bold text-slate-600 mb-3 uppercase tracking-wider">Data Utama Pendaftaran</h4>
@@ -157,32 +149,31 @@
                             <input type="text" id="hobby" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary outline-none" placeholder="Contoh: Membaca">
                         </div>
 
-                        <!-- ALAMAT TERPISAH DENGAN API -->
                         <div class="col-span-1 md:col-span-2 grid-alamat-inputs grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
                             <div class="sm:col-span-2">
                                 <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Jalan / Dusun (RT/RW) <span class="text-red-500">*</span></label>
                                 <input type="text" id="alamatJalan" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary outline-none" placeholder="Jl. Anggrek No. 12, RT 02/RW 05">
                             </div>
                             
-                            <div>
+                            <div id="wrap-prov">
                                 <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Provinsi <span class="text-red-500">*</span></label>
                                 <select id="alamatProv" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary outline-none">
                                     <option value="">Sedang memuat...</option>
                                 </select>
                             </div>
-                            <div>
+                            <div id="wrap-kab">
                                 <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Kabupaten / Kota <span class="text-red-500">*</span></label>
                                 <select id="alamatKab" required disabled class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary outline-none bg-slate-100 disabled:opacity-75">
                                     <option value="">Pilih Provinsi Dahulu...</option>
                                 </select>
                             </div>
-                            <div>
+                            <div id="wrap-kec">
                                 <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Kecamatan <span class="text-red-500">*</span></label>
                                 <select id="alamatKec" required disabled class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary outline-none bg-slate-100 disabled:opacity-75">
                                     <option value="">Pilih Kabupaten Dahulu...</option>
                                 </select>
                             </div>
-                            <div>
+                            <div id="wrap-desa">
                                 <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Desa / Kelurahan <span class="text-red-500">*</span></label>
                                 <select id="alamatDesa" required disabled class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary outline-none bg-slate-100 disabled:opacity-75">
                                     <option value="">Pilih Kecamatan Dahulu...</option>
@@ -195,7 +186,6 @@
                             </div>
                         </div>
 
-                        <!-- Wadah Gabungan Alamat Saat Dicetak PDF -->
                         <div class="hidden print-combine-alamat hidden col-span-1 md:col-span-2">
                             <label class="block text-xs font-bold text-slate-400">Alamat Lengkap</label>
                             <p id="print-alamat-text" class="font-semibold text-slate-800"></p>
@@ -206,11 +196,9 @@
                     </div>
                 </div>
 
-                <!-- STEP 2: DATA ORANG TUA -->
                 <div id="step-2" class="form-step hidden animate-in fade-in duration-300">
                     <h3 class="text-xl font-bold text-primary mb-6 border-b pb-2">Data Orang Tua / Wali</h3>
                     
-                    <!-- DATA AYAH -->
                     <h4 class="font-bold text-slate-700 mb-3 bg-slate-100 p-2 rounded-lg">Data Ayah</h4>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                         <div>
@@ -249,7 +237,6 @@
                         </div>
                     </div>
 
-                    <!-- DATA IBU -->
                     <h4 class="font-bold text-slate-700 mb-3 bg-slate-100 p-2 rounded-lg">Data Ibu</h4>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
@@ -293,7 +280,6 @@
                     </div>
                 </div>
 
-                <!-- STEP 3: UPLOAD BERKAS -->
                 <div id="step-3" class="form-step hidden animate-in fade-in duration-300">
                     <h3 class="text-xl font-bold text-primary mb-6 border-b pb-2">Upload Berkas Pendukung</h3>
                     
@@ -345,95 +331,119 @@
         document.getElementById('nisn-display').innerText = nisn;
 
         // ==========================================
-        // SISTEM API WILAYAH INDONESIA
+        // SISTEM API WILAYAH INDONESIA (DENGAN FALLBACK AMAN)
         // ==========================================
-        const API_WILAYAH = "https://kanglerian.github.io/api-wilayah-indonesia/api/";
-        const elProv = document.getElementById('alamatProv');
-        const elKab = document.getElementById('alamatKab');
-        const elKec = document.getElementById('alamatKec');
-        const elDesa = document.getElementById('alamatDesa');
+        // Menggunakan API EMSIFA (Standar yang paling sering online di GitHub)
+        const API_WILAYAH = "https://emsifa.github.io/api-wilayah-indonesia/api/";
+        let elProv = document.getElementById('alamatProv');
+        let elKab = document.getElementById('alamatKab');
+        let elKec = document.getElementById('alamatKec');
+        let elDesa = document.getElementById('alamatDesa');
 
-        // Fetch Provinsi Saat Web Dibuka
+        // Fungsi Fallback jika API down
+        function fallbackToManualInput() {
+            document.getElementById('wrap-prov').innerHTML = `<label class="block text-xs font-bold text-slate-500 uppercase mb-1">Provinsi <span class="text-red-500">*</span></label><input type="text" id="alamatProv" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary outline-none" placeholder="Ketik Provinsi">`;
+            document.getElementById('wrap-kab').innerHTML = `<label class="block text-xs font-bold text-slate-500 uppercase mb-1">Kabupaten/Kota <span class="text-red-500">*</span></label><input type="text" id="alamatKab" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary outline-none" placeholder="Ketik Kabupaten/Kota">`;
+            document.getElementById('wrap-kec').innerHTML = `<label class="block text-xs font-bold text-slate-500 uppercase mb-1">Kecamatan <span class="text-red-500">*</span></label><input type="text" id="alamatKec" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary outline-none" placeholder="Ketik Kecamatan">`;
+            document.getElementById('wrap-desa').innerHTML = `<label class="block text-xs font-bold text-slate-500 uppercase mb-1">Desa/Kel. <span class="text-red-500">*</span></label><input type="text" id="alamatDesa" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary outline-none" placeholder="Ketik Desa/Kelurahan">`;
+
+            // Hubungkan kembali event listener ke input teks baru
+            ['alamatJalan','alamatDesa','alamatKec','alamatKab','alamatProv','alamatPos'].forEach(id => {
+                document.getElementById(id)?.addEventListener('input', updatePrintAlamat);
+            });
+        }
+
+        // Fetch Provinsi
         fetch(API_WILAYAH + 'provinces.json')
-            .then(res => res.json())
+            .then(res => {
+                if(!res.ok) throw new Error("API Down");
+                return res.json();
+            })
             .then(data => {
                 let options = '<option value="">Pilih Provinsi...</option>';
                 data.forEach(prov => { options += `<option value="${prov.name}" data-id="${prov.id}">${prov.name}</option>`; });
                 elProv.innerHTML = options;
+
+                // Event Listeners jika API Sukses
+                elProv.addEventListener('change', (e) => {
+                    elKab.innerHTML = '<option value="">Memuat Kabupaten...</option>';
+                    elKab.classList.add('select-loading'); elKab.disabled = true;
+                    elKec.innerHTML = '<option value="">Pilih Kabupaten Dahulu...</option>'; elKec.disabled = true;
+                    elDesa.innerHTML = '<option value="">Pilih Kecamatan Dahulu...</option>'; elDesa.disabled = true;
+
+                    const id = e.target.options[e.target.selectedIndex].getAttribute('data-id');
+                    if(!id) return;
+
+                    fetch(`${API_WILAYAH}regencies/${id}.json`)
+                        .then(res => res.json())
+                        .then(data => {
+                            let opts = '<option value="">Pilih Kabupaten/Kota...</option>';
+                            data.forEach(k => { opts += `<option value="${k.name}" data-id="${k.id}">${k.name}</option>`; });
+                            elKab.innerHTML = opts;
+                            elKab.classList.remove('select-loading'); elKab.disabled = false;
+                            updatePrintAlamat();
+                        });
+                });
+
+                elKab.addEventListener('change', (e) => {
+                    elKec.innerHTML = '<option value="">Memuat Kecamatan...</option>';
+                    elKec.classList.add('select-loading'); elKec.disabled = true;
+                    elDesa.innerHTML = '<option value="">Pilih Kecamatan Dahulu...</option>'; elDesa.disabled = true;
+
+                    const id = e.target.options[e.target.selectedIndex].getAttribute('data-id');
+                    if(!id) return;
+
+                    fetch(`${API_WILAYAH}districts/${id}.json`)
+                        .then(res => res.json())
+                        .then(data => {
+                            let opts = '<option value="">Pilih Kecamatan...</option>';
+                            data.forEach(k => { opts += `<option value="${k.name}" data-id="${k.id}">${k.name}</option>`; });
+                            elKec.innerHTML = opts;
+                            elKec.classList.remove('select-loading'); elKec.disabled = false;
+                            updatePrintAlamat();
+                        });
+                });
+
+                elKec.addEventListener('change', (e) => {
+                    elDesa.innerHTML = '<option value="">Memuat Desa/Kelurahan...</option>';
+                    elDesa.classList.add('select-loading'); elDesa.disabled = true;
+
+                    const id = e.target.options[e.target.selectedIndex].getAttribute('data-id');
+                    if(!id) return;
+
+                    fetch(`${API_WILAYAH}villages/${id}.json`)
+                        .then(res => res.json())
+                        .then(data => {
+                            let opts = '<option value="">Pilih Desa/Kelurahan...</option>';
+                            data.forEach(k => { opts += `<option value="${k.name}" data-id="${k.id}">${k.name}</option>`; });
+                            elDesa.innerHTML = opts;
+                            elDesa.classList.remove('select-loading'); elDesa.disabled = false;
+                            updatePrintAlamat();
+                        });
+                });
+
+                elDesa.addEventListener('change', updatePrintAlamat);
             })
-            .catch(err => elProv.innerHTML = '<option value="">Gagal memuat API Wilayah. Ketik Manual.</option>');
-
-        // Trigger Provinsi Berubah -> Load Kabupaten
-        elProv.addEventListener('change', (e) => {
-            elKab.innerHTML = '<option value="">Memuat Kabupaten...</option>';
-            elKab.classList.add('select-loading'); elKab.disabled = true;
-            elKec.innerHTML = '<option value="">Pilih Kabupaten Dahulu...</option>'; elKec.disabled = true;
-            elDesa.innerHTML = '<option value="">Pilih Kecamatan Dahulu...</option>'; elDesa.disabled = true;
-
-            const id = e.target.options[e.target.selectedIndex].getAttribute('data-id');
-            if(!id) return;
-
-            fetch(`${API_WILAYAH}regencies/${id}.json`)
-                .then(res => res.json())
-                .then(data => {
-                    let opts = '<option value="">Pilih Kabupaten/Kota...</option>';
-                    data.forEach(k => { opts += `<option value="${k.name}" data-id="${k.id}">${k.name}</option>`; });
-                    elKab.innerHTML = opts;
-                    elKab.classList.remove('select-loading'); elKab.disabled = false;
-                    updatePrintAlamat();
+            .catch(err => {
+                console.warn("Beralih ke Input Manual. API Wilayah Gagal:", err);
+                fallbackToManualInput();
+                Swal.fire({
+                    toast: true, position: 'top-end', icon: 'info',
+                    title: 'Sistem wilayah otomatis sedang gangguan. Silakan ketik alamat manual.',
+                    showConfirmButton: false, timer: 6000
                 });
-        });
+            });
 
-        // Trigger Kabupaten Berubah -> Load Kecamatan
-        elKab.addEventListener('change', (e) => {
-            elKec.innerHTML = '<option value="">Memuat Kecamatan...</option>';
-            elKec.classList.add('select-loading'); elKec.disabled = true;
-            elDesa.innerHTML = '<option value="">Pilih Kecamatan Dahulu...</option>'; elDesa.disabled = true;
-
-            const id = e.target.options[e.target.selectedIndex].getAttribute('data-id');
-            if(!id) return;
-
-            fetch(`${API_WILAYAH}districts/${id}.json`)
-                .then(res => res.json())
-                .then(data => {
-                    let opts = '<option value="">Pilih Kecamatan...</option>';
-                    data.forEach(k => { opts += `<option value="${k.name}" data-id="${k.id}">${k.name}</option>`; });
-                    elKec.innerHTML = opts;
-                    elKec.classList.remove('select-loading'); elKec.disabled = false;
-                    updatePrintAlamat();
-                });
-        });
-
-        // Trigger Kecamatan Berubah -> Load Desa
-        elKec.addEventListener('change', (e) => {
-            elDesa.innerHTML = '<option value="">Memuat Desa/Kelurahan...</option>';
-            elDesa.classList.add('select-loading'); elDesa.disabled = true;
-
-            const id = e.target.options[e.target.selectedIndex].getAttribute('data-id');
-            if(!id) return;
-
-            fetch(`${API_WILAYAH}villages/${id}.json`)
-                .then(res => res.json())
-                .then(data => {
-                    let opts = '<option value="">Pilih Desa/Kelurahan...</option>';
-                    data.forEach(k => { opts += `<option value="${k.name}" data-id="${k.id}">${k.name}</option>`; });
-                    elDesa.innerHTML = opts;
-                    elDesa.classList.remove('select-loading'); elDesa.disabled = false;
-                    updatePrintAlamat();
-                });
-        });
-
-        elDesa.addEventListener('change', updatePrintAlamat);
         document.getElementById('alamatJalan').addEventListener('input', updatePrintAlamat);
         document.getElementById('alamatPos').addEventListener('input', updatePrintAlamat);
 
         function updatePrintAlamat() {
-            const jl = document.getElementById('alamatJalan').value || "...";
-            const ds = document.getElementById('alamatDesa').value || "...";
-            const kc = document.getElementById('alamatKec').value || "...";
-            const kb = document.getElementById('alamatKab').value || "...";
-            const pr = document.getElementById('alamatProv').value || "...";
-            const kp = document.getElementById('alamatPos').value || "...";
+            const jl = document.getElementById('alamatJalan')?.value || "...";
+            const ds = document.getElementById('alamatDesa')?.value || "...";
+            const kc = document.getElementById('alamatKec')?.value || "...";
+            const kb = document.getElementById('alamatKab')?.value || "...";
+            const pr = document.getElementById('alamatProv')?.value || "...";
+            const kp = document.getElementById('alamatPos')?.value || "...";
             document.getElementById('print-alamat-text').innerText = `${jl}, Desa/Kel. ${ds}, Kec. ${kc}, ${kb}, Prov. ${pr} (${kp})`;
         }
 
@@ -489,9 +499,10 @@
             if (from === 1 && to === 2) {
                 const req1 = ['jk', 'nik', 'email', 'anakKe', 'cita', 'hobby', 'alamatJalan', 'alamatProv', 'alamatKab', 'alamatKec', 'alamatDesa', 'alamatPos'];
                 for (let id of req1) {
-                    if (!document.getElementById(id).value) {
+                    const el = document.getElementById(id);
+                    if (el && !el.value) {
                         Swal.fire('Perhatian', 'Harap lengkapi semua data bertanda bintang (*) di Langkah 1.', 'warning');
-                        document.getElementById(id).focus();
+                        el.focus();
                         return; // Cegat pindah halaman
                     }
                 }
@@ -501,9 +512,10 @@
             if (from === 2 && to === 3) {
                 const req2 = ['namaAyah', 'pendAyah', 'pekAyah', 'penghAyah', 'namaIbu', 'pendIbu', 'pekIbu', 'penghIbu'];
                 for (let id of req2) {
-                    if (!document.getElementById(id).value) {
+                    const el = document.getElementById(id);
+                    if (el && !el.value) {
                         Swal.fire('Perhatian', 'Harap lengkapi semua data bertanda bintang (*) di Langkah 2.', 'warning');
-                        document.getElementById(id).focus();
+                        el.focus();
                         return; // Cegat pindah halaman
                     }
                 }
