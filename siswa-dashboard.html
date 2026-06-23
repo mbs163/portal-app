@@ -1,48 +1,297 @@
-<div class="max-w-3xl mx-auto p-6">
-    <div id="step-1" class="bg-white p-6 rounded-xl shadow-md">
-        <h3 class="font-bold text-xl mb-4">Langkah 1: Data Pribadi</h3>
-        <input type="text" id="jk" placeholder="Jenis Kelamin (L/P)" class="w-full p-3 border mb-2">
-        <input type="text" id="nik" placeholder="NIK" class="w-full p-3 border mb-2">
-        <button onclick="nextStep(1, 2)" class="bg-blue-600 text-white px-4 py-2 mt-4">Selanjutnya</button>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Siswa | MAS MANBA'USSALAM</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = { theme: { extend: { colors: { primary: '#0B1F3B', accent: '#D4AF37' } } } }
+    </script>
+</head>
+<body class="bg-slate-50 min-h-screen text-slate-800 font-sans">
+
+    <nav class="bg-primary text-white p-4 shadow-md">
+        <div class="max-w-4xl mx-auto flex justify-between items-center">
+            <div class="font-bold text-lg flex items-center gap-2">
+                <div class="w-8 h-8 bg-accent text-primary flex items-center justify-center rounded-lg">M</div>
+                Portal Siswa
+            </div>
+            <button onclick="logout()" class="text-sm bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg font-bold transition-colors">
+                <i class="fa-solid fa-power-off mr-1"></i> Keluar
+            </button>
+        </div>
+    </nav>
+
+    <div class="max-w-4xl mx-auto p-4 md:p-6 mt-4">
+        
+        <div class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-slate-200 mb-6">
+            <h1 class="text-2xl md:text-3xl font-extrabold text-primary mb-2">Selamat Datang, <span id="nama-siswa" class="text-accent">Siswa</span>!</h1>
+            <p class="text-slate-500 mb-4">NISN: <span id="nisn-display" class="font-bold">Memuat...</span></p>
+            
+            <div id="status-container" class="p-4 rounded-xl border-l-4 font-medium flex items-center gap-3">
+                <i class="fa-solid fa-circle-notch fa-spin text-xl"></i> Memuat status pendaftaran...
+            </div>
+        </div>
+
+        <div id="main-content" class="hidden">
+            
+            <div class="flex items-center justify-between mb-8 relative">
+                <div class="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-slate-200 -z-10 rounded-full"></div>
+                <div class="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-primary -z-10 rounded-full transition-all duration-300" id="progress-bar" style="width: 0%"></div>
+                
+                <div class="step-indicator flex flex-col items-center gap-2">
+                    <div id="ind-1" class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold shadow-md ring-4 ring-white">1</div>
+                    <span class="text-xs font-bold text-primary">Data Diri</span>
+                </div>
+                <div class="step-indicator flex flex-col items-center gap-2">
+                    <div id="ind-2" class="w-10 h-10 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center font-bold shadow-md ring-4 ring-white">2</div>
+                    <span class="text-xs font-bold text-slate-500" id="txt-2">Orang Tua</span>
+                </div>
+                <div class="step-indicator flex flex-col items-center gap-2">
+                    <div id="ind-3" class="w-10 h-10 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center font-bold shadow-md ring-4 ring-white">3</div>
+                    <span class="text-xs font-bold text-slate-500" id="txt-3">Berkas</span>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-slate-100">
+                
+                <div id="step-1" class="form-step animate-in fade-in duration-300">
+                    <h3 class="text-xl font-bold text-primary mb-6 border-b pb-2"><i class="fa-solid fa-user mr-2 text-accent"></i>Lengkapi Data Pribadi</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Jenis Kelamin (L/P)</label>
+                            <select id="jk" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary outline-none">
+                                <option value="">Pilih...</option>
+                                <option value="Laki-laki">Laki-laki</option>
+                                <option value="Perempuan">Perempuan</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase mb-1">NIK Siswa</label>
+                            <input type="number" id="nik" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary outline-none" placeholder="16 Digit NIK">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Email Aktif</label>
+                            <input type="email" id="email" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary outline-none" placeholder="email@contoh.com">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Anak Ke-berapa</label>
+                            <input type="number" id="anakKe" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary outline-none" placeholder="Contoh: 1">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Cita-cita</label>
+                            <input type="text" id="cita" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary outline-none" placeholder="Contoh: Dokter">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Hobi</label>
+                            <input type="text" id="hobby" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary outline-none" placeholder="Contoh: Membaca">
+                        </div>
+                        <div class="col-span-1 md:col-span-2">
+                            <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Alamat Lengkap</label>
+                            <textarea id="alamat" rows="3" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary outline-none" placeholder="Nama Jalan, RT/RW, Desa, Kecamatan..."></textarea>
+                        </div>
+                    </div>
+                    <div class="mt-8 text-right">
+                        <button onclick="changeStep(1, 2)" class="bg-primary hover:bg-slate-900 text-white px-8 py-3 rounded-xl font-bold transition-colors">Selanjutnya <i class="fa-solid fa-arrow-right ml-2"></i></button>
+                    </div>
+                </div>
+
+                <div id="step-2" class="form-step hidden animate-in fade-in duration-300">
+                    <h3 class="text-xl font-bold text-primary mb-6 border-b pb-2"><i class="fa-solid fa-users mr-2 text-accent"></i>Data Orang Tua</h3>
+                    
+                    <h4 class="font-bold text-slate-700 mb-3 bg-slate-100 p-2 rounded-lg">Data Ayah</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                        <input type="text" id="namaAyah" placeholder="Nama Lengkap Ayah" class="p-3 border rounded-lg focus:ring-2 focus:ring-primary outline-none">
+                        <input type="text" id="pendAyah" placeholder="Pendidikan Terakhir Ayah" class="p-3 border rounded-lg focus:ring-2 focus:ring-primary outline-none">
+                        <input type="text" id="pekAyah" placeholder="Pekerjaan Ayah" class="p-3 border rounded-lg focus:ring-2 focus:ring-primary outline-none">
+                        <input type="text" id="penghAyah" placeholder="Penghasilan Per Bulan" class="p-3 border rounded-lg focus:ring-2 focus:ring-primary outline-none">
+                    </div>
+
+                    <h4 class="font-bold text-slate-700 mb-3 bg-slate-100 p-2 rounded-lg">Data Ibu</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <input type="text" id="namaIbu" placeholder="Nama Lengkap Ibu" class="p-3 border rounded-lg focus:ring-2 focus:ring-primary outline-none">
+                        <input type="text" id="pendIbu" placeholder="Pendidikan Terakhir Ibu" class="p-3 border rounded-lg focus:ring-2 focus:ring-primary outline-none">
+                        <input type="text" id="pekIbu" placeholder="Pekerjaan Ibu" class="p-3 border rounded-lg focus:ring-2 focus:ring-primary outline-none">
+                        <input type="text" id="penghIbu" placeholder="Penghasilan Per Bulan" class="p-3 border rounded-lg focus:ring-2 focus:ring-primary outline-none">
+                    </div>
+
+                    <div class="mt-8 flex justify-between">
+                        <button onclick="changeStep(2, 1)" class="bg-slate-200 hover:bg-slate-300 text-slate-700 px-6 py-3 rounded-xl font-bold transition-colors"><i class="fa-solid fa-arrow-left mr-2"></i> Kembali</button>
+                        <button onclick="changeStep(2, 3)" class="bg-primary hover:bg-slate-900 text-white px-8 py-3 rounded-xl font-bold transition-colors">Selanjutnya <i class="fa-solid fa-arrow-right ml-2"></i></button>
+                    </div>
+                </div>
+
+                <div id="step-3" class="form-step hidden animate-in fade-in duration-300">
+                    <h3 class="text-xl font-bold text-primary mb-6 border-b pb-2"><i class="fa-solid fa-file-arrow-up mr-2 text-accent"></i>Upload Berkas Pendukung</h3>
+                    
+                    <div class="bg-yellow-50 border border-yellow-200 text-yellow-800 p-4 rounded-xl mb-6 text-sm">
+                        <i class="fa-solid fa-circle-info mr-2"></i> Pastikan format file adalah gambar (JPG/PNG) atau PDF. Maksimal ukuran per file adalah 1 MB.
+                    </div>
+
+                    <div class="space-y-5">
+                        <div class="border p-4 rounded-xl">
+                            <label class="block font-bold text-slate-700 mb-2">1. Ijazah / SKL</label>
+                            <input type="file" id="fileIjazah" accept="image/*,application/pdf" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-slate-900">
+                        </div>
+                        <div class="border p-4 rounded-xl">
+                            <label class="block font-bold text-slate-700 mb-2">2. Kartu Keluarga (KK)</label>
+                            <input type="file" id="fileKK" accept="image/*,application/pdf" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-slate-900">
+                        </div>
+                        <div class="border p-4 rounded-xl">
+                            <label class="block font-bold text-slate-700 mb-2">3. Pas Foto (Latar Merah)</label>
+                            <input type="file" id="fileFoto" accept="image/*" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-slate-900">
+                        </div>
+                    </div>
+
+                    <div class="mt-8 flex justify-between">
+                        <button onclick="changeStep(3, 2)" class="bg-slate-200 hover:bg-slate-300 text-slate-700 px-6 py-3 rounded-xl font-bold transition-colors"><i class="fa-solid fa-arrow-left mr-2"></i> Kembali</button>
+                        <button onclick="submitDashboard()" class="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-xl font-bold transition-colors shadow-lg shadow-green-600/30">
+                            <i class="fa-solid fa-paper-plane mr-2"></i> Kirim Data Lengkap
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>
 
-    <div id="step-2" class="hidden bg-white p-6 rounded-xl shadow-md">
-        <h3 class="font-bold text-xl mb-4">Langkah 2: Data Orang Tua</h3>
-        <input type="text" id="namaAyah" placeholder="Nama Ayah" class="w-full p-3 border mb-2">
-        <button onclick="nextStep(2, 1)" class="bg-gray-500 text-white px-4 py-2 mt-4">Kembali</button>
-        <button onclick="nextStep(2, 3)" class="bg-blue-600 text-white px-4 py-2 mt-4">Selanjutnya</button>
-    </div>
+    <script>
+        // GANTI URL INI DENGAN URL DEPLOYMENT GAS ANDA YANG AKTIF!
+        const URL_GAS = "https://script.google.com/macros/s/AKfycbw_6Q-M6_pvGLUZH4IFtefxa3iwStdhyD7nii4lFIMAyYaILCfnbLOp6DnuWChG2HRmpw/exec";
+        
+        const nisn = localStorage.getItem('userNISN');
+        const namaSiswa = localStorage.getItem('userName');
 
-    <div id="step-3" class="hidden bg-white p-6 rounded-xl shadow-md">
-        <h3 class="font-bold text-xl mb-4">Langkah 3: Upload Berkas</h3>
-        <label>Pas Foto (Max 500kb):</label>
-        <input type="file" id="foto" class="mb-4">
-        <button onclick="submitForm()" class="bg-emerald-600 text-white px-6 py-3 mt-4 w-full font-bold">Kirim Pendaftaran</button>
-    </div>
-</div>
+        // Fungsi Proteksi Keamanan (Agar yang belum login tidak bisa masuk)
+        if (!nisn) {
+            window.location.href = 'index.html';
+        }
 
-<script>
-    function nextStep(current, next) {
-        document.getElementById('step-'+current).classList.add('hidden');
-        document.getElementById('step-'+next).classList.remove('hidden');
-    }
+        document.getElementById('nama-siswa').innerText = namaSiswa || 'Siswa';
+        document.getElementById('nisn-display').innerText = nisn;
 
-    async function submitForm() {
-        // Konversi file ke base64 (WAJIB ADA)
-        const file = document.getElementById('foto').files[0];
-        const reader = new FileReader();
-        reader.onloadend = async () => {
-            const payload = {
-                action: 'updateLengkap',
-                nisn: localStorage.getItem('userNISN'),
-                fileFoto: reader.result.split(',')[1],
-                mimeFoto: file.type,
-                jk: document.getElementById('jk').value,
-                // ... tambahkan field lainnya
-            };
-            const res = await fetch(URL_GAS, { method: 'POST', body: JSON.stringify(payload) });
-            Swal.fire('Sukses', 'Data berhasil dikirim!', 'success');
-        };
-        reader.readAsDataURL(file);
-    }
-</script>
+        // Load Status
+        async function init() {
+            try {
+                const res = await fetch(URL_GAS + "?action=getPMB");
+                const json = await res.json();
+                
+                // Cari data siswa berdasarkan NISN yang login
+                const dataSiswa = json.data.find(s => s.nisn.toString() === nisn.toString());
+
+                if (dataSiswa) {
+                    const statusBox = document.getElementById('status-container');
+                    
+                    if (dataSiswa.status === 'Diterima') {
+                        statusBox.className = "p-4 rounded-xl border-l-4 font-medium flex items-center gap-3 bg-green-50 border-green-500 text-green-800";
+                        statusBox.innerHTML = '<i class="fa-solid fa-circle-check text-2xl"></i> <div><h4 class="font-bold">Selamat, Anda Diterima!</h4><p class="text-sm">Silakan lengkapi data dan unggah berkas di bawah ini.</p></div>';
+                        document.getElementById('main-content').classList.remove('hidden'); // UNLOCK FORM
+                    } 
+                    else if (dataSiswa.status === 'Ditolak') {
+                        statusBox.className = "p-4 rounded-xl border-l-4 font-medium flex items-center gap-3 bg-red-50 border-red-500 text-red-800";
+                        statusBox.innerHTML = '<i class="fa-solid fa-circle-xmark text-2xl"></i> <div><h4 class="font-bold">Mohon Maaf, Anda Ditolak.</h4><p class="text-sm">Pendaftaran Anda tidak dapat dilanjutkan.</p></div>';
+                    } 
+                    else {
+                        statusBox.className = "p-4 rounded-xl border-l-4 font-medium flex items-center gap-3 bg-yellow-50 border-yellow-500 text-yellow-800";
+                        statusBox.innerHTML = '<i class="fa-solid fa-clock text-2xl"></i> <div><h4 class="font-bold">Status: Sedang Diproses</h4><p class="text-sm">Pendaftaran awal Anda sedang ditinjau oleh Admin (Maks 1x24 jam).</p></div>';
+                    }
+                }
+            } catch (error) {
+                console.error("Gagal memuat status:", error);
+            }
+        }
+
+        // Logic UI Stepper
+        function changeStep(from, to) {
+            document.getElementById('step-'+from).classList.add('hidden');
+            document.getElementById('step-'+to).classList.remove('hidden');
+            
+            // Update UI Warna Step
+            document.getElementById('ind-'+to).classList.replace('bg-slate-200', 'bg-primary');
+            document.getElementById('ind-'+to).classList.replace('text-slate-500', 'text-white');
+            document.getElementById('txt-'+to).classList.replace('text-slate-500', 'text-primary');
+            
+            if(to === 2) document.getElementById('progress-bar').style.width = '50%';
+            if(to === 3) document.getElementById('progress-bar').style.width = '100%';
+            if(to === 1) document.getElementById('progress-bar').style.width = '0%';
+        }
+
+        // Helper fungsi konversi file
+        const getBase64 = (file) => new Promise((resolve, reject) => {
+            if (!file) return resolve({ data: "", mime: "" });
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve({ data: reader.result.split(',')[1], mime: file.type });
+            reader.onerror = error => reject(error);
+        });
+
+        // Submit Data
+        async function submitDashboard() {
+            const fIjazah = document.getElementById('fileIjazah').files[0];
+            const fKK = document.getElementById('fileKK').files[0];
+            const fFoto = document.getElementById('fileFoto').files[0];
+
+            if(!fIjazah || !fKK || !fFoto) {
+                Swal.fire('Perhatian', 'Mohon unggah ketiga berkas (Ijazah, KK, Foto) sebelum mengirim!', 'warning');
+                return;
+            }
+
+            Swal.fire({ title: 'Mengunggah Data...', text: 'Mohon tunggu, jangan tutup halaman ini.', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+
+            try {
+                // Konversi semua file
+                const bIjazah = await getBase64(fIjazah);
+                const bKK = await getBase64(fKK);
+                const bFoto = await getBase64(fFoto);
+
+                const payload = {
+                    action: 'updateLengkap',
+                    nisn: nisn,
+                    jk: document.getElementById('jk').value,
+                    nik: document.getElementById('nik').value,
+                    email: document.getElementById('email').value,
+                    anakKe: document.getElementById('anakKe').value,
+                    cita: document.getElementById('cita').value,
+                    hobby: document.getElementById('hobby').value,
+                    alamat: document.getElementById('alamat').value,
+                    namaAyah: document.getElementById('namaAyah').value,
+                    pendAyah: document.getElementById('pendAyah').value,
+                    pekAyah: document.getElementById('pekAyah').value,
+                    penghAyah: document.getElementById('penghAyah').value,
+                    namaIbu: document.getElementById('namaIbu').value,
+                    pendIbu: document.getElementById('pendIbu').value,
+                    pekIbu: document.getElementById('pekIbu').value,
+                    penghIbu: document.getElementById('penghIbu').value,
+                    fileIjazah: bIjazah.data, mimeIjazah: bIjazah.mime,
+                    fileKK: bKK.data, mimeKK: bKK.mime,
+                    fileFoto: bFoto.data, mimeFoto: bFoto.mime
+                };
+
+                const res = await fetch(URL_GAS, { method: 'POST', body: JSON.stringify(payload) });
+                const result = await res.json();
+
+                if (result.status === 'success') {
+                    Swal.fire('Berhasil!', 'Seluruh data dan berkas Anda telah berhasil disimpan.', 'success').then(() => {
+                        window.location.reload();
+                    });
+                } else {
+                    Swal.fire('Gagal', 'Terjadi kesalahan sistem.', 'error');
+                }
+            } catch(e) {
+                Swal.fire('Error', 'Gagal mengirim data: ' + e.message, 'error');
+            }
+        }
+
+        function logout() {
+            localStorage.clear();
+            window.location.href = 'index.html'; // Kembali ke login
+        }
+
+        // Jalankan saat web dibuka
+        init();
+    </script>
+</body>
+</html>
