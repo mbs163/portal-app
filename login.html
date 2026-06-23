@@ -84,7 +84,7 @@
                 const user = document.getElementById('user-id').value;
                 const pass = document.getElementById('user-pass').value;
 
-                // URL Google Apps Script
+                // URL Google Apps Script yang sudah lurus satu baris sempurna
                 const GAS_URL = "https://script.google.com/macros/s/AKfycbw_6Q-M6_pvGLUZH4IFtefxa3iwStdhyD7nii4lFIMAyYaILCfnbLOp6DnuWChG2HRmpw/exec"; 
 
                 const response = await fetch(GAS_URL, {
@@ -103,9 +103,9 @@
                     localStorage.setItem('userRole', result.role);
                     localStorage.setItem('userName', result.nama);
                     
-                    // WAJIB: Simpan NISN agar dikenali oleh dashboard siswa nantinya
+                    // MENYIMPAN NISN KHUSUS UNTUK SISWA
                     if (result.role === 'siswa') {
-                        localStorage.setItem('userNISN', user); 
+                        localStorage.setItem('userNISN', user);
                     }
                     
                     Swal.fire({
@@ -118,13 +118,13 @@
                         timerProgressBar: true,
                         backdrop: `rgba(11, 31, 59, 0.4)`
                     }).then(() => {
-                        // POLISI LALU LINTAS: Pengarah Halaman Sesuai Role
+                        // POLISI LALU LINTAS YANG SUDAH DIPERBAIKI
                         if (result.role === 'admin') {
                             window.location.href = 'https://mbs163.github.io/web-portal/admin/index.html';
                         } else if (result.role === 'siswa') {
-                            window.location.href = 'siswa-dashboard.html'; // Langsung ke Dashboard Siswa
+                            window.location.href = 'siswa-dashboard.html'; // LANGSUNG DIARAHKAN KE DASHBOARD SISWA
                         } else {
-                            window.location.href = 'index.html'; 
+                            window.location.href = 'index.html'; // Hanya untuk jaga-jaga jika role bukan admin/siswa
                         }
                     });
 
