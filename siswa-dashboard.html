@@ -510,80 +510,73 @@
         });
 
         async function submitDashboard() {
-            const fIjazah = document.getElementById('fileIjazah').files[0];
-            const fKK = document.getElementById('fileKK').files[0];
-            const fFoto = document.getElementById('fileFoto').files[0];
+    const fIjazah = document.getElementById('fileIjazah').files[0];
+    const fKK = document.getElementById('fileKK').files[0];
+    const fFoto = document.getElementById('fileFoto').files[0];
 
-            if(!fIjazah || !fKK || !fFoto) {
-                Swal.fire('Perhatian', 'Mohon unggah ketiga berkas (Ijazah, KK, Foto) sebelum mengirim!', 'warning');
-                return;
-            }
+    if(!fIjazah || !fKK || !fFoto) {
+        Swal.fire('Perhatian', 'Mohon unggah ketiga berkas!', 'warning');
+        return;
+    }
 
-            // CEGAT UKURAN FILE (MAKSIMAL 2MB PER FILE)
-            const MAX_SIZE = 2 * 1024 * 1024; // 2 MB
-            if (fIjazah.size > MAX_SIZE || fKK.size > MAX_SIZE || fFoto.size > MAX_SIZE) {
-                Swal.fire('File Terlalu Besar!', 'Maksimal ukuran setiap file adalah 2 MB. Silakan perkecil (kompres) foto/PDF Anda terlebih dahulu.', 'error');
-                return;
-            }
+    Swal.fire({ title: 'Mengunggah...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
 
-            const jl = document.getElementById('alamatJalan').value;
-            const ds = document.getElementById('alamatDesa').value;
-            const kc = document.getElementById('alamatKec').value;
-            const kb = document.getElementById('alamatKab').value;
-            const pr = document.getElementById('alamatProv').value;
-            const kp = document.getElementById('alamatPos').value;
-            const alamatGabungan = `${jl}, Desa/Kel. ${ds}, Kec. ${kc}, ${kb}, Prov. ${pr} (${kp})`;
+    try {
+        const bIjazah = await getBase64(fIjazah);
+        const bKK = await getBase64(fKK);
+        const bFoto = await getBase64(fFoto);
 
-            Swal.fire({ title: 'Mengunggah Data...', text: 'Ini memakan waktu sekitar 10-30 detik. Jangan tutup halaman ini.', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+        const payload = {
+            action: 'updateLengkap',
+            nisn: nisn,
+            jk: document.getElementById('jk').value,
+            nik: document.getElementById('nik').value,
+            email: document.getElementById('email').value,
+            anakKe: document.getElementById('anakKe').value,
+            cita: document.getElementById('cita').value,
+            hobby: document.getElementById('hobby').value,
+            alamat: document.getElementById('print-alamat-text').innerText, 
+            namaAyah: document.getElementById('namaAyah').value,
+            pendAyah: document.getElementById('pendAyah').value,
+            pekAyah: document.getElementById('pekAyah').value,
+            penghAyah: document.getElementById('penghAyah').value,
+            namaIbu: document.getElementById('namaIbu').value,
+            pendIbu: document.getElementById('pendIbu').value,
+            pekIbu: document.getElementById('pekIbu').value,
+            penghIbu: document.getElementById('penghIbu').value,
+            fileIjazah: bIjazah.data, mimeIjazah: bIjazah.mime,
+            fileKK: bKK.data, mimeKK: bKK.mime,
+            fileFoto: bFoto.data, mimeFoto: bFoto.mime
+        };
 
-            try {
-                const bIjazah = await getBase64(fIjazah);
-                const bKK = await getBase64(fKK);
-                const bFoto = await getBase64(fFoto);
+        const res = await fetch(URL_GAS, { 
+            method: 'POST', 
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify(payload) 
+        });
 
-                const payload = {
-                    action: 'updateLengkap',
-                    nisn: nisn,
-                    jk: document.getElementById('jk').value,
-                    nik: document.getElementById('nik').value,
-                    email: document.getElementById('email').value,
-                    anakKe: document.getElementById('anakKe').value,
-                    cita: document.getElementById('cita').value,
-                    hobby: document.getElementById('hobby').value,
-                    alamat: alamatGabungan, 
-                    namaAyah: document.getElementById('namaAyah').value,
-                    pendAyah: document.getElementById('pendAyah').value,
-                    pekAyah: document.getElementById('pekAyah').value,
-                    penghAyah: document.getElementById('penghAyah').value,
-                    namaIbu: document.getElementById('namaIbu').value,
-                    pendIbu: document.getElementById('pendIbu').value,
-                    pekIbu: document.getElementById('pekIbu').value,
-                    penghIbu: document.getElementById('penghIbu').value,
-                    fileIjazah: bIjazah.data, mimeIjazah: bIjazah.mime,
-                    fileKK: bKK.data, mimeKK: bKK.mime,
-                    fileFoto: bFoto.data, mimeFoto: bFoto.mime
-                };
+        // --- BAGIAN INI UNTUK MENANGKAP APA YANG SALAH ---
+        const textRes = await res.text(); 
+        console.log("Respon dari Server:", textRes); // CEK DI CONSOLE (F12)
 
-                // PENGGUNAAN HEADER TEXT/PLAIN AGAR TIDAK DIBLOKIR OLEH BROWSER (CORS)
-                const res = await fetch(URL_GAS, { 
-                    method: 'POST', 
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify(payload) 
-                });
-                
-                const result = await res.json();
-
-                if (result.status === 'success') {
-                    Swal.fire('Berhasil!', 'Data dan berkas pendaftaran lengkap Anda berhasil disimpan.', 'success').then(() => window.location.reload());
-                } else {
-                    Swal.fire('Gagal', 'Terjadi kesalahan sistem dari server.', 'error');
-                }
-            } catch(e) {
-                // JIKA ERROR FAILED TO FETCH TETAP MUNCUL, BERIKAN PESAN YANG JELAS
-                Swal.fire('Koneksi Terputus (Failed to Fetch)', 'Gagal menghubungi server. Pastikan File Anda di bawah 2MB dan Anda sudah memberikan Izin Otorisasi pada Google Drive Anda.', 'error');
-                console.error(e);
-            }
+        let result;
+        try {
+            result = JSON.parse(textRes);
+        } catch (e) {
+            throw new Error("Server tidak mengirim format JSON yang valid. Isi respon: " + textRes);
         }
+
+        if (result.status === 'success') {
+            Swal.fire('Berhasil!', 'Data disimpan.', 'success').then(() => window.location.reload());
+        } else {
+            Swal.fire('Gagal', result.message || 'Error tidak diketahui', 'error');
+        }
+
+    } catch(e) {
+        console.error("Error Detail:", e);
+        Swal.fire('Error', e.message, 'error');
+    }
+}
 
         function logout() {
             localStorage.clear();
