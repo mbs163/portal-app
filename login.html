@@ -12,95 +12,64 @@
         tailwind.config = { theme: { extend: { colors: { primary: '#0B1F3B', accent: '#D4AF37' } } } }
     </script>
 </head>
-<body class="bg-slate-50 font-sans min-h-screen flex flex-col items-center justify-center p-4">
+<body class="bg-slate-50 font-sans h-screen h-[100dvh] flex flex-col items-center justify-center p-4 sm:p-6 overflow-hidden">
 
     <div id="loading-overlay" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] hidden flex-col items-center justify-center text-white transition-all">
         <i class="fa-solid fa-circle-notch fa-spin text-5xl text-accent mb-4"></i>
         <p class="font-bold tracking-widest uppercase text-sm animate-pulse">Memverifikasi Kredensial...</p>
     </div>
 
-    <div class="bg-white w-full max-w-4xl rounded-3xl shadow-2xl flex overflow-hidden border border-slate-100 min-h-[500px] my-auto">
+    <div class="bg-white w-full max-w-4xl rounded-3xl shadow-2xl flex overflow-hidden border border-slate-100 max-h-[600px] flex-1 my-2">
         
-        <div id="brand-panel" class="hidden md:flex w-1/2 bg-primary p-12 flex-col justify-between text-white relative overflow-hidden transition-all duration-500">
+        <div id="brand-panel" class="hidden md:flex w-1/2 bg-primary p-12 flex-col justify-between text-white relative overflow-hidden">
             <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
             <div class="relative z-10">
                 <div id="brand-icon" class="w-12 h-12 bg-accent text-primary rounded-xl flex items-center justify-center font-bold text-xl mb-6">M</div>
-                <h2 id="brand-title" class="text-3xl font-extrabold mb-4">Sistem Academic Terintegrasi</h2>
-                <p id="brand-desc" class="text-slate-300 text-sm leading-relaxed">Kelola administrasi, kepegawaian, dan data madrasah dengan sistem yang aman, cepat, dan modern.</p>
+                <h2 id="brand-title" class="text-3xl font-extrabold mb-4">Sistem Akademik Terintegrasi</h2>
+                <p id="brand-desc" class="text-slate-300 text-sm leading-relaxed">Kelola administrasi, akademik, dan data madrasah dengan sistem yang aman, cepat, dan modern.</p>
             </div>
             <div class="relative z-10 text-xs text-slate-400 font-medium uppercase tracking-widest">&copy; 2026 MAS MANBA'USSALAM</div>
         </div>
 
-        <div class="w-full md:w-1/2 p-8 sm:p-12 flex flex-col justify-center">
+        <div class="w-full md:w-1/2 p-6 sm:p-12 flex flex-col justify-center h-full overflow-y-auto">
             
-            <div class="md:hidden flex justify-center mb-6">
-                <div class="w-14 h-14 bg-primary text-accent rounded-2xl flex items-center justify-center font-bold text-2xl shadow-lg">M</div>
+            <div class="md:hidden flex flex-col items-center mb-6">
+                <div class="w-16 h-16 bg-primary text-accent rounded-2xl flex items-center justify-center font-bold text-3xl shadow-lg mb-4">M</div>
+                <h2 class="text-xl font-bold text-slate-900 text-center">Sistem Akademik</h2>
             </div>
 
-            <div class="flex gap-2 mb-8 bg-slate-100 p-1 rounded-xl">
-                <button id="btn-user" onclick="switchTab('user')" class="flex-1 py-3 text-sm font-bold rounded-lg transition-all bg-white text-primary shadow-sm">Akademik</button>
-                <button id="btn-admin" onclick="switchTab('admin')" class="flex-1 py-3 text-sm font-bold rounded-lg transition-all text-slate-500 hover:text-primary">Admin</button>
-            </div>
-
-            <form id="form-user" onsubmit="handleLogin(event, 'user')" class="space-y-5 animate-in fade-in duration-500">
-                <h3 class="text-xl font-bold text-slate-900">Login Akademik</h3>
-                <input type="text" id="user-id" required class="w-full p-4 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary outline-none" placeholder="NISN / NIK">
-                <input type="date" id="user-pass" required class="w-full p-4 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary outline-none" title="Tanggal Lahir">
-                <button type="submit" class="w-full bg-primary text-white p-4 rounded-xl font-bold hover:bg-slate-950 transition-all">Masuk Sistem</button>
-            </form>
-
-            <form id="form-admin" onsubmit="handleLogin(event, 'admin')" class="space-y-5 hidden animate-in fade-in duration-500">
-                <h3 class="text-xl font-bold text-slate-900">Login Admin</h3>
-                <input type="text" id="admin-user" required class="w-full p-4 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary outline-none" placeholder="Username">
-                <input type="password" id="admin-pass" required class="w-full p-4 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary outline-none" placeholder="Password">
-                <button type="submit" class="w-full bg-accent text-primary p-4 rounded-xl font-bold hover:bg-yellow-500 transition-all">Login Administrator</button>
+            <form id="form-user" onsubmit="handleLogin(event, 'user')" class="space-y-5 animate-in fade-in duration-500 w-full max-w-sm mx-auto">
+                <div class="text-center md:text-left mb-6">
+                    <h3 class="text-xl font-bold text-slate-900 hidden md:block">Login Portal</h3>
+                    <p class="text-sm text-slate-500 mt-1">Gunakan NISN (Siswa) atau NIK (Guru/Pegawai) untuk masuk.</p>
+                </div>
+                
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1 ml-1">ID Pengguna</label>
+                    <input type="text" id="user-id" required class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-primary outline-none transition-all" placeholder="NISN / NIK">
+                </div>
+                
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1 ml-1">Tanggal Lahir (Password)</label>
+                    <input type="date" id="user-pass" required class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-primary outline-none transition-all">
+                </div>
+                
+                <button type="submit" class="w-full bg-primary text-white p-4 rounded-xl font-bold hover:bg-slate-950 transition-all shadow-md shadow-primary/20 mt-2">Masuk Sistem</button>
             </form>
 
             <div class="mt-8 text-center">
-                <a href="https://mbs163.github.io/web-portal" class="text-xs font-bold text-slate-400 hover:text-primary transition-colors flex items-center justify-center gap-2">
+                <a href="https://mbs163.github.io/web-portal" class="text-xs font-bold text-slate-400 hover:text-primary transition-colors flex items-center justify-center gap-2 p-2">
                     <i class="fa-solid fa-arrow-left"></i> Kembali ke Web Portal
                 </a>
             </div>
         </div>
     </div>
 
-    <footer class="mt-auto pt-4 text-center text-slate-400 text-[10px] font-semibold uppercase tracking-widest pb-4">
+    <footer class="text-center text-slate-400 text-[10px] font-semibold uppercase tracking-widest mt-2 mb-2 w-full flex-none">
         &copy; 2026 MAS MANBA'USSALAM &bull; Digital Ecosystem
     </footer>
 
     <script>
-        function switchTab(tab) {
-            const formUser = document.getElementById('form-user');
-            const formAdmin = document.getElementById('form-admin');
-            const btnUser = document.getElementById('btn-user');
-            const btnAdmin = document.getElementById('btn-admin');
-            
-            const title = document.getElementById('brand-title');
-            const desc = document.getElementById('brand-desc');
-            const icon = document.getElementById('brand-icon');
-
-            if (tab === 'admin') {
-                if(formUser) formUser.classList.add('hidden');
-                if(formAdmin) formAdmin.classList.remove('hidden');
-                if(btnAdmin) btnAdmin.classList.add('bg-white', 'text-primary', 'shadow-sm');
-                if(btnUser) btnUser.classList.remove('bg-white', 'text-primary', 'shadow-sm');
-                
-                if(title) title.innerText = "Pusat Kendali Admin";
-                if(desc) desc.innerText = "Akses eksklusif untuk manajemen sistem, monitoring database, dan konfigurasi server pusat.";
-                if(icon) icon.innerText = "A";
-                
-            } else {
-                if(formAdmin) formAdmin.classList.add('hidden');
-                if(formUser) formUser.classList.remove('hidden');
-                if(btnUser) btnUser.classList.add('bg-white', 'text-primary', 'shadow-sm');
-                if(btnAdmin) btnAdmin.classList.remove('bg-white', 'text-primary', 'shadow-sm');
-
-                if(title) title.innerText = "Sistem Akademik Terintegrasi";
-                if(desc) desc.innerText = "Kelola administrasi, kepegawaian, dan data madrasah dengan sistem yang aman, cepat, dan modern.";
-                if(icon) icon.innerText = "M";
-            }
-        }
-
         async function handleLogin(e, type) {
             e.preventDefault();
             
@@ -111,8 +80,9 @@
             }
 
             try {
-                const user = type === 'admin' ? document.getElementById('admin-user').value : document.getElementById('user-id').value;
-                const pass = type === 'admin' ? document.getElementById('admin-pass').value : document.getElementById('user-pass').value;
+                // Ambil nilai khusus untuk form siswa/guru
+                const user = document.getElementById('user-id').value;
+                const pass = document.getElementById('user-pass').value;
 
                 // URL Google Apps Script yang sudah lurus satu baris sempurna
                 const GAS_URL = "https://script.google.com/macros/s/AKfycbw_6Q-M6_pvGLUZH4IFtefxa3iwStdhyD7nii4lFIMAyYaILCfnbLOp6DnuWChG2HRmpw/exec"; 
@@ -142,22 +112,19 @@
                         timer: 2000,
                         timerProgressBar: true,
                         backdrop: `rgba(11, 31, 59, 0.4)`
-                   }).then(() => {
-    // POLISI LALU LINTAS: Cek perannya
-    if (result.role === 'admin') {
-        // Jika Admin, lempar ke repo Web Portal
-        // ⚠️ GANTI [username-github-anda] DENGAN USERNAME ASLI ANDA
-        window.location.href = 'https://mbs163.github.io/web-portal/admin/index.html';
-    } else {
-        // Jika Siswa/Guru, masuk ke Portal Akademik
-        window.location.href = 'index.html'; 
-    }
-});
+                    }).then(() => {
+                        // POLISI LALU LINTAS (Biarpun formnya hilang, logikanya tetap ada untuk berjaga-jaga)
+                        if (result.role === 'admin') {
+                            window.location.href = 'https://mbs163.github.io/web-portal/admin/index.html';
+                        } else {
+                            window.location.href = 'index.html'; 
+                        }
+                    });
 
                 } else {
                     Swal.fire({
                         title: 'Akses Ditolak!',
-                        text: 'NISN/NIK/Username atau Password tidak sesuai.',
+                        text: 'NISN/NIK atau Tanggal Lahir tidak sesuai.',
                         icon: 'error',
                         confirmButtonText: 'Coba Lagi',
                         confirmButtonColor: '#0B1F3B'
