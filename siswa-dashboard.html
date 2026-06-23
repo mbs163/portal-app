@@ -10,14 +10,27 @@
     <script>
         tailwind.config = { theme: { extend: { colors: { primary: '#0B1F3B', accent: '#D4AF37' } } } }
     </script>
+    <style>
+        /* CSS KHUSUS UNTUK CETAK PDF AGAR RAPI */
+        @media print {
+            body { background-color: white !important; color: black !important; }
+            nav, .no-print, button, .step-indicator-container { display: none !important; }
+            .form-step { display: block !important; page-break-inside: avoid; margin-bottom: 20px; }
+            .shadow-lg { box-shadow: none !important; border: 1px solid #ccc !important; }
+            input, select, textarea { border: none !important; background: transparent !important; padding: 0 !important; appearance: none; -webkit-appearance: none; }
+            h1, h3 { color: black !important; }
+            #main-content { display: block !important; }
+        }
+    </style>
 </head>
 <body class="bg-slate-50 min-h-screen text-slate-800 font-sans">
 
-    <nav class="bg-primary text-white p-4 shadow-md">
+    <!-- Navbar -->
+    <nav class="bg-primary text-white p-4 shadow-md print:hidden">
         <div class="max-w-4xl mx-auto flex justify-between items-center">
             <div class="font-bold text-lg flex items-center gap-2">
                 <div class="w-8 h-8 bg-accent text-primary flex items-center justify-center rounded-lg">M</div>
-                Portal Siswa
+                Portal Siswa PMB
             </div>
             <button onclick="logout()" class="text-sm bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg font-bold transition-colors">
                 <i class="fa-solid fa-power-off mr-1"></i> Keluar
@@ -27,39 +40,94 @@
 
     <div class="max-w-4xl mx-auto p-4 md:p-6 mt-4">
         
-        <div class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-slate-200 mb-6">
-            <h1 class="text-2xl md:text-3xl font-extrabold text-primary mb-2">Selamat Datang, <span id="nama-siswa" class="text-accent">Siswa</span>!</h1>
-            <p class="text-slate-500 mb-4">NISN: <span id="nisn-display" class="font-bold">Memuat...</span></p>
+        <!-- HEADER STATUS BANNER -->
+        <div class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-slate-200 mb-6 relative">
+            <!-- Kop Surat Khusus Saat Print -->
+            <div class="hidden print:block text-center border-b-2 border-black pb-4 mb-4">
+                <h2 class="text-2xl font-bold uppercase">Bukti Pendaftaran Peserta Didik Baru</h2>
+                <h3 class="text-lg font-bold">MAS MANBA'USSALAM</h3>
+                <p class="text-sm">Tahun Ajaran 2026/2027</p>
+            </div>
+
+            <div class="flex justify-between items-start">
+                <div>
+                    <h1 class="text-2xl md:text-3xl font-extrabold text-primary mb-2">Halo, <span id="nama-siswa" class="text-accent">Siswa</span>!</h1>
+                    <p class="text-slate-500 mb-4">NISN: <span id="nisn-display" class="font-bold text-slate-800">Memuat...</span></p>
+                </div>
+                <!-- Tombol Cetak PDF -->
+                <button onclick="window.print()" class="no-print hidden bg-slate-800 hover:bg-slate-900 text-white px-4 py-2 rounded-lg font-bold text-sm transition-colors shadow-md" id="btn-cetak">
+                    <i class="fa-solid fa-print mr-2"></i> Cetak Bukti
+                </button>
+            </div>
             
-            <div id="status-container" class="p-4 rounded-xl border-l-4 font-medium flex items-center gap-3">
+            <div id="status-container" class="no-print p-4 rounded-xl border-l-4 font-medium flex items-center gap-3">
                 <i class="fa-solid fa-circle-notch fa-spin text-xl"></i> Memuat status pendaftaran...
             </div>
         </div>
 
+        <!-- MAIN DASHBOARD -->
         <div id="main-content" class="hidden">
             
-            <div class="flex items-center justify-between mb-8 relative">
+            <!-- STEPPER INDICATOR -->
+            <div class="step-indicator-container flex items-center justify-between mb-8 relative px-4">
                 <div class="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-slate-200 -z-10 rounded-full"></div>
                 <div class="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-primary -z-10 rounded-full transition-all duration-300" id="progress-bar" style="width: 0%"></div>
                 
-                <div class="step-indicator flex flex-col items-center gap-2">
+                <div class="flex flex-col items-center gap-2">
                     <div id="ind-1" class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold shadow-md ring-4 ring-white">1</div>
                     <span class="text-xs font-bold text-primary">Data Diri</span>
                 </div>
-                <div class="step-indicator flex flex-col items-center gap-2">
+                <div class="flex flex-col items-center gap-2">
                     <div id="ind-2" class="w-10 h-10 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center font-bold shadow-md ring-4 ring-white">2</div>
                     <span class="text-xs font-bold text-slate-500" id="txt-2">Orang Tua</span>
                 </div>
-                <div class="step-indicator flex flex-col items-center gap-2">
+                <div class="flex flex-col items-center gap-2">
                     <div id="ind-3" class="w-10 h-10 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center font-bold shadow-md ring-4 ring-white">3</div>
                     <span class="text-xs font-bold text-slate-500" id="txt-3">Berkas</span>
                 </div>
             </div>
 
+            <!-- FORM STEPS -->
             <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-slate-100">
                 
+                <!-- STEP 1: DATA PRIBADI -->
                 <div id="step-1" class="form-step animate-in fade-in duration-300">
-                    <h3 class="text-xl font-bold text-primary mb-6 border-b pb-2"><i class="fa-solid fa-user mr-2 text-accent"></i>Lengkapi Data Pribadi</h3>
+                    <h3 class="text-xl font-bold text-primary mb-4 border-b pb-2"><i class="fa-solid fa-user mr-2 text-accent no-print"></i>Data Pribadi Calon Siswa</h3>
+                    
+                    <!-- DATA AWAL (TERKUNCI / READ ONLY) -->
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 mb-6 relative">
+                        <div class="absolute top-3 right-3 text-xs font-bold bg-slate-200 text-slate-500 px-2 py-1 rounded-md no-print"><i class="fa-solid fa-lock mr-1"></i> Terkunci</div>
+                        <h4 class="text-sm font-bold text-slate-600 mb-3 uppercase tracking-wider">Data Utama Pendaftaran</h4>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-400">Nama Lengkap</label>
+                                <input type="text" id="ro-nama" readonly disabled class="w-full bg-transparent font-semibold text-slate-800 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-400">NISN</label>
+                                <input type="text" id="ro-nisn" readonly disabled class="w-full bg-transparent font-semibold text-slate-800 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-400">Tempat, Tanggal Lahir</label>
+                                <input type="text" id="ro-ttl" readonly disabled class="w-full bg-transparent font-semibold text-slate-800 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-400">Asal Sekolah</label>
+                                <input type="text" id="ro-asal" readonly disabled class="w-full bg-transparent font-semibold text-slate-800 outline-none">
+                            </div>
+                        </div>
+                        
+                        <!-- TOMBOL WA ADMIN UNTUK EDIT TYPO -->
+                        <!-- GANTI 628XXXXXXX DENGAN NOMOR WA ADMIN SEKOLAH ANDA -->
+                        <div class="mt-4 pt-3 border-t border-slate-200 text-right no-print">
+                            <a href="https://wa.me/6281234567890?text=Assalamu'alaikum%20Admin,%20saya%20ingin%20mengajukan%20perbaikan%20data%20awal%20pendaftaran%20PMB%20karena%20ada%20kesalahan%20ketik." target="_blank" class="text-xs font-bold text-emerald-600 hover:text-emerald-700 flex items-center justify-end gap-1">
+                                <i class="fa-brands fa-whatsapp text-lg"></i> Ada kesalahan data di atas? Ajukan perbaikan.
+                            </a>
+                        </div>
+                    </div>
+
+                    <h4 class="text-sm font-bold text-slate-600 mb-3 uppercase tracking-wider no-print">Lengkapi Data Tambahan</h4>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Jenis Kelamin (L/P)</label>
@@ -91,16 +159,17 @@
                         </div>
                         <div class="col-span-1 md:col-span-2">
                             <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Alamat Lengkap</label>
-                            <textarea id="alamat" rows="3" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary outline-none" placeholder="Nama Jalan, RT/RW, Desa, Kecamatan..."></textarea>
+                            <textarea id="alamat" rows="2" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary outline-none" placeholder="Nama Jalan, RT/RW, Desa, Kecamatan..."></textarea>
                         </div>
                     </div>
-                    <div class="mt-8 text-right">
+                    <div class="mt-8 text-right no-print">
                         <button onclick="changeStep(1, 2)" class="bg-primary hover:bg-slate-900 text-white px-8 py-3 rounded-xl font-bold transition-colors">Selanjutnya <i class="fa-solid fa-arrow-right ml-2"></i></button>
                     </div>
                 </div>
 
+                <!-- STEP 2: DATA ORANG TUA -->
                 <div id="step-2" class="form-step hidden animate-in fade-in duration-300">
-                    <h3 class="text-xl font-bold text-primary mb-6 border-b pb-2"><i class="fa-solid fa-users mr-2 text-accent"></i>Data Orang Tua</h3>
+                    <h3 class="text-xl font-bold text-primary mb-6 border-b pb-2"><i class="fa-solid fa-users mr-2 text-accent no-print"></i>Data Orang Tua</h3>
                     
                     <h4 class="font-bold text-slate-700 mb-3 bg-slate-100 p-2 rounded-lg">Data Ayah</h4>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
@@ -118,20 +187,21 @@
                         <input type="text" id="penghIbu" placeholder="Penghasilan Per Bulan" class="p-3 border rounded-lg focus:ring-2 focus:ring-primary outline-none">
                     </div>
 
-                    <div class="mt-8 flex justify-between">
+                    <div class="mt-8 flex justify-between no-print">
                         <button onclick="changeStep(2, 1)" class="bg-slate-200 hover:bg-slate-300 text-slate-700 px-6 py-3 rounded-xl font-bold transition-colors"><i class="fa-solid fa-arrow-left mr-2"></i> Kembali</button>
                         <button onclick="changeStep(2, 3)" class="bg-primary hover:bg-slate-900 text-white px-8 py-3 rounded-xl font-bold transition-colors">Selanjutnya <i class="fa-solid fa-arrow-right ml-2"></i></button>
                     </div>
                 </div>
 
+                <!-- STEP 3: UPLOAD BERKAS -->
                 <div id="step-3" class="form-step hidden animate-in fade-in duration-300">
-                    <h3 class="text-xl font-bold text-primary mb-6 border-b pb-2"><i class="fa-solid fa-file-arrow-up mr-2 text-accent"></i>Upload Berkas Pendukung</h3>
+                    <h3 class="text-xl font-bold text-primary mb-6 border-b pb-2"><i class="fa-solid fa-file-arrow-up mr-2 text-accent no-print"></i>Upload Berkas Pendukung</h3>
                     
-                    <div class="bg-yellow-50 border border-yellow-200 text-yellow-800 p-4 rounded-xl mb-6 text-sm">
+                    <div class="bg-yellow-50 border border-yellow-200 text-yellow-800 p-4 rounded-xl mb-6 text-sm no-print">
                         <i class="fa-solid fa-circle-info mr-2"></i> Pastikan format file adalah gambar (JPG/PNG) atau PDF. Maksimal ukuran per file adalah 1 MB.
                     </div>
 
-                    <div class="space-y-5">
+                    <div class="space-y-5 no-print">
                         <div class="border p-4 rounded-xl">
                             <label class="block font-bold text-slate-700 mb-2">1. Ijazah / SKL</label>
                             <input type="file" id="fileIjazah" accept="image/*,application/pdf" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-slate-900">
@@ -146,7 +216,12 @@
                         </div>
                     </div>
 
-                    <div class="mt-8 flex justify-between">
+                    <div class="hidden print:block text-center mt-12 pt-8">
+                        <p class="mb-16">Panitia PMB MAS Manba'ussalam</p>
+                        <p class="font-bold border-b border-black inline-block px-4">Admin PMB</p>
+                    </div>
+
+                    <div class="mt-8 flex justify-between no-print">
                         <button onclick="changeStep(3, 2)" class="bg-slate-200 hover:bg-slate-300 text-slate-700 px-6 py-3 rounded-xl font-bold transition-colors"><i class="fa-solid fa-arrow-left mr-2"></i> Kembali</button>
                         <button onclick="submitDashboard()" class="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-xl font-bold transition-colors shadow-lg shadow-green-600/30">
                             <i class="fa-solid fa-paper-plane mr-2"></i> Kirim Data Lengkap
@@ -159,57 +234,78 @@
     </div>
 
     <script>
-        // GANTI URL INI DENGAN URL DEPLOYMENT GAS ANDA YANG AKTIF!
+        // GANTI DENGAN URL GAS ANDA
         const URL_GAS = "https://script.google.com/macros/s/AKfycbw_6Q-M6_pvGLUZH4IFtefxa3iwStdhyD7nii4lFIMAyYaILCfnbLOp6DnuWChG2HRmpw/exec";
         
         const nisn = localStorage.getItem('userNISN');
         const namaSiswa = localStorage.getItem('userName');
 
-        // Fungsi Proteksi Keamanan (Agar yang belum login tidak bisa masuk)
-        if (!nisn) {
-            window.location.href = 'index.html';
-        }
+        // Proteksi Halaman
+        if (!nisn) { window.location.href = 'index.html'; }
 
         document.getElementById('nama-siswa').innerText = namaSiswa || 'Siswa';
         document.getElementById('nisn-display').innerText = nisn;
 
-        // Load Status
+        // Load Status & Data Awal
         async function init() {
             try {
                 const res = await fetch(URL_GAS + "?action=getPMB");
                 const json = await res.json();
                 
-                // Cari data siswa berdasarkan NISN yang login
                 const dataSiswa = json.data.find(s => s.nisn.toString() === nisn.toString());
 
                 if (dataSiswa) {
                     const statusBox = document.getElementById('status-container');
                     
+                    // Isi Data Read-Only
+                    document.getElementById('ro-nama').value = dataSiswa.nama;
+                    document.getElementById('ro-nisn').value = dataSiswa.nisn;
+                    
+                    // Format Tanggal Lahir jika perlu
+                    let tglLahirText = dataSiswa.tanggal_lahir;
+                    if(tglLahirText.includes("T")) {
+                        tglLahirText = tglLahirText.split('T')[0]; // Ambil YYYY-MM-DD
+                    }
+                    document.getElementById('ro-ttl').value = dataSiswa.tempat_lahir + ", " + tglLahirText;
+                    document.getElementById('ro-asal').value = dataSiswa.asal_sekolah;
+
+                    // Logika Status
                     if (dataSiswa.status === 'Diterima') {
-                        statusBox.className = "p-4 rounded-xl border-l-4 font-medium flex items-center gap-3 bg-green-50 border-green-500 text-green-800";
+                        statusBox.className = "no-print p-4 rounded-xl border-l-4 font-medium flex items-center gap-3 bg-green-50 border-green-500 text-green-800";
                         statusBox.innerHTML = '<i class="fa-solid fa-circle-check text-2xl"></i> <div><h4 class="font-bold">Selamat, Anda Diterima!</h4><p class="text-sm">Silakan lengkapi data dan unggah berkas di bawah ini.</p></div>';
-                        document.getElementById('main-content').classList.remove('hidden'); // UNLOCK FORM
+                        document.getElementById('main-content').classList.remove('hidden'); // BUKA FORM
+                        document.getElementById('btn-cetak').classList.remove('hidden'); // MUNCULKAN TOMBOL CETAK
                     } 
                     else if (dataSiswa.status === 'Ditolak') {
-                        statusBox.className = "p-4 rounded-xl border-l-4 font-medium flex items-center gap-3 bg-red-50 border-red-500 text-red-800";
+                        statusBox.className = "no-print p-4 rounded-xl border-l-4 font-medium flex items-center gap-3 bg-red-50 border-red-500 text-red-800";
                         statusBox.innerHTML = '<i class="fa-solid fa-circle-xmark text-2xl"></i> <div><h4 class="font-bold">Mohon Maaf, Anda Ditolak.</h4><p class="text-sm">Pendaftaran Anda tidak dapat dilanjutkan.</p></div>';
                     } 
                     else {
-                        statusBox.className = "p-4 rounded-xl border-l-4 font-medium flex items-center gap-3 bg-yellow-50 border-yellow-500 text-yellow-800";
-                        statusBox.innerHTML = '<i class="fa-solid fa-clock text-2xl"></i> <div><h4 class="font-bold">Status: Sedang Diproses</h4><p class="text-sm">Pendaftaran awal Anda sedang ditinjau oleh Admin (Maks 1x24 jam).</p></div>';
+                        statusBox.className = "no-print p-4 rounded-xl border-l-4 font-medium flex items-center gap-3 bg-yellow-50 border-yellow-500 text-yellow-800";
+                        statusBox.innerHTML = '<i class="fa-solid fa-clock text-2xl"></i> <div><h4 class="font-bold">Status: Sedang Diproses</h4><p class="text-sm">Pendaftaran awal Anda sedang ditinjau oleh Admin (Maks 1x24 jam). Silakan pantau berkala.</p></div>';
+                        
+                        // Menampilkan form readonly saja sebagai bukti pendaftaran awal (optional)
+                        document.getElementById('main-content').classList.remove('hidden');
+                        document.getElementById('btn-cetak').classList.remove('hidden');
+                        // Sembunyikan form pengisian dan stepper karena belum diterima
+                        document.querySelectorAll('.form-step').forEach(el => el.classList.add('hidden'));
+                        document.getElementById('step-1').classList.remove('hidden');
+                        document.querySelector('.step-indicator-container').classList.add('hidden');
+                        document.querySelector('#step-1 h4.text-sm').classList.add('hidden');
+                        document.querySelector('#step-1 .grid.grid-cols-1').classList.add('hidden');
+                        document.querySelector('#step-1 .text-right.no-print').classList.add('hidden');
                     }
                 }
             } catch (error) {
-                console.error("Gagal memuat status:", error);
+                console.error("Gagal memuat:", error);
             }
         }
 
-        // Logic UI Stepper
+        // Stepper
         function changeStep(from, to) {
             document.getElementById('step-'+from).classList.add('hidden');
             document.getElementById('step-'+to).classList.remove('hidden');
             
-            // Update UI Warna Step
             document.getElementById('ind-'+to).classList.replace('bg-slate-200', 'bg-primary');
             document.getElementById('ind-'+to).classList.replace('text-slate-500', 'text-white');
             document.getElementById('txt-'+to).classList.replace('text-slate-500', 'text-primary');
@@ -219,7 +315,6 @@
             if(to === 1) document.getElementById('progress-bar').style.width = '0%';
         }
 
-        // Helper fungsi konversi file
         const getBase64 = (file) => new Promise((resolve, reject) => {
             if (!file) return resolve({ data: "", mime: "" });
             const reader = new FileReader();
@@ -234,15 +329,9 @@
             const fKK = document.getElementById('fileKK').files[0];
             const fFoto = document.getElementById('fileFoto').files[0];
 
-            if(!fIjazah || !fKK || !fFoto) {
-                Swal.fire('Perhatian', 'Mohon unggah ketiga berkas (Ijazah, KK, Foto) sebelum mengirim!', 'warning');
-                return;
-            }
-
             Swal.fire({ title: 'Mengunggah Data...', text: 'Mohon tunggu, jangan tutup halaman ini.', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
 
             try {
-                // Konversi semua file
                 const bIjazah = await getBase64(fIjazah);
                 const bKK = await getBase64(fKK);
                 const bFoto = await getBase64(fFoto);
@@ -274,23 +363,20 @@
                 const result = await res.json();
 
                 if (result.status === 'success') {
-                    Swal.fire('Berhasil!', 'Seluruh data dan berkas Anda telah berhasil disimpan.', 'success').then(() => {
-                        window.location.reload();
-                    });
+                    Swal.fire('Berhasil!', 'Data dan berkas berhasil disimpan.', 'success').then(() => window.location.reload());
                 } else {
-                    Swal.fire('Gagal', 'Terjadi kesalahan sistem.', 'error');
+                    Swal.fire('Gagal', 'Terjadi kesalahan.', 'error');
                 }
             } catch(e) {
-                Swal.fire('Error', 'Gagal mengirim data: ' + e.message, 'error');
+                Swal.fire('Error', e.message, 'error');
             }
         }
 
         function logout() {
             localStorage.clear();
-            window.location.href = 'index.html'; // Kembali ke login
+            window.location.href = 'index.html';
         }
 
-        // Jalankan saat web dibuka
         init();
     </script>
 </body>
