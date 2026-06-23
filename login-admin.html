@@ -38,26 +38,26 @@
                 <h2 class="text-xl font-bold text-slate-900 text-center">Sistem Akademik</h2>
             </div>
 
-           <form id="form-admin" onsubmit="handleLogin(event, 'admin')" class="space-y-5 animate-in fade-in duration-500 w-full max-w-sm mx-auto">
-    <div class="text-center md:text-left mb-6">
-        <h3 class="text-xl font-bold text-slate-900 hidden md:block">Pusat Kendali Admin</h3>
-        <p class="text-sm text-slate-500 mt-1">Masukkan username dan password khusus administrator.</p>
-    </div>
-    
-    <div>
-        <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1 ml-1">Username</label>
-        <input type="text" id="admin-user" required class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-primary outline-none transition-all" placeholder="Ketik username admin...">
-    </div>
-    
-    <div>
-        <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1 ml-1">Password</label>
-        <input type="password" id="admin-pass" required class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-primary outline-none transition-all" placeholder="••••••••">
-    </div>
-    
-    <button type="submit" class="w-full bg-accent text-primary p-4 rounded-xl font-bold hover:bg-yellow-400 transition-all shadow-md shadow-accent/20 mt-2">
-        Login Administrator
-    </button>
-</form>
+            <form id="form-admin" onsubmit="handleLogin(event, 'admin')" class="space-y-5 animate-in fade-in duration-500 w-full max-w-sm mx-auto">
+                <div class="text-center md:text-left mb-6">
+                    <h3 class="text-xl font-bold text-slate-900 hidden md:block">Pusat Kendali Admin</h3>
+                    <p class="text-sm text-slate-500 mt-1">Masukkan username dan password khusus administrator.</p>
+                </div>
+                
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1 ml-1">Username</label>
+                    <input type="text" id="admin-user" required class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-primary outline-none transition-all" placeholder="Ketik username admin...">
+                </div>
+                
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1 ml-1">Password</label>
+                    <input type="password" id="admin-pass" required class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-primary outline-none transition-all" placeholder="••••••••">
+                </div>
+                
+                <button type="submit" class="w-full bg-accent text-primary p-4 rounded-xl font-bold hover:bg-yellow-400 transition-all shadow-md shadow-accent/20 mt-2">
+                    Login Administrator
+                </button>
+            </form>
 
             <div class="mt-8 text-center">
                 <a href="https://mbs163.github.io/web-portal" class="text-xs font-bold text-slate-400 hover:text-primary transition-colors flex items-center justify-center gap-2 p-2">
@@ -82,11 +82,17 @@
             }
 
             try {
-                // Ambil nilai khusus untuk form siswa/guru
-                const user = document.getElementById('user-id').value;
-                const pass = document.getElementById('user-pass').value;
+                // LOGIKA CERDAS: Mengambil data sesuai jenis form
+                let user, pass;
+                if (type === 'admin') {
+                    user = document.getElementById('admin-user').value;
+                    pass = document.getElementById('admin-pass').value;
+                } else {
+                    user = document.getElementById('user-id').value;
+                    pass = document.getElementById('user-pass').value;
+                }
 
-                // URL Google Apps Script yang sudah lurus satu baris sempurna
+                // URL Google Apps Script
                 const GAS_URL = "https://script.google.com/macros/s/AKfycbw_6Q-M6_pvGLUZH4IFtefxa3iwStdhyD7nii4lFIMAyYaILCfnbLOp6DnuWChG2HRmpw/exec"; 
 
                 const response = await fetch(GAS_URL, {
@@ -115,7 +121,6 @@
                         timerProgressBar: true,
                         backdrop: `rgba(11, 31, 59, 0.4)`
                     }).then(() => {
-                        // POLISI LALU LINTAS (Biarpun formnya hilang, logikanya tetap ada untuk berjaga-jaga)
                         if (result.role === 'admin') {
                             window.location.href = 'https://mbs163.github.io/web-portal/admin/index.html';
                         } else {
@@ -126,7 +131,7 @@
                 } else {
                     Swal.fire({
                         title: 'Akses Ditolak!',
-                        text: 'NISN/NIK atau Tanggal Lahir tidak sesuai.',
+                        text: 'Username atau Password tidak sesuai.',
                         icon: 'error',
                         confirmButtonText: 'Coba Lagi',
                         confirmButtonColor: '#0B1F3B'
@@ -140,7 +145,7 @@
                 
                 Swal.fire({
                     title: 'Koneksi Gagal!',
-                    text: 'Terjadi kesalahan jaringan atau server tidak merespons. Pastikan URL sistem sudah valid.',
+                    text: 'Terjadi kesalahan sistem. Pastikan URL GAS benar & memiliki akses publik.',
                     icon: 'warning',
                     confirmButtonText: 'Tutup',
                     confirmButtonColor: '#0B1F3B'
