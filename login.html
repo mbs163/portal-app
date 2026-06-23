@@ -84,7 +84,7 @@
                 const user = document.getElementById('user-id').value;
                 const pass = document.getElementById('user-pass').value;
 
-                // URL Google Apps Script yang sudah lurus satu baris sempurna
+                // URL Google Apps Script
                 const GAS_URL = "https://script.google.com/macros/s/AKfycbw_6Q-M6_pvGLUZH4IFtefxa3iwStdhyD7nii4lFIMAyYaILCfnbLOp6DnuWChG2HRmpw/exec"; 
 
                 const response = await fetch(GAS_URL, {
@@ -103,6 +103,11 @@
                     localStorage.setItem('userRole', result.role);
                     localStorage.setItem('userName', result.nama);
                     
+                    // WAJIB: Simpan NISN agar dikenali oleh dashboard siswa nantinya
+                    if (result.role === 'siswa') {
+                        localStorage.setItem('userNISN', user); 
+                    }
+                    
                     Swal.fire({
                         title: 'Akses Diberikan!',
                         text: 'Selamat datang kembali, ' + result.nama,
@@ -113,9 +118,11 @@
                         timerProgressBar: true,
                         backdrop: `rgba(11, 31, 59, 0.4)`
                     }).then(() => {
-                        // POLISI LALU LINTAS (Biarpun formnya hilang, logikanya tetap ada untuk berjaga-jaga)
+                        // POLISI LALU LINTAS: Pengarah Halaman Sesuai Role
                         if (result.role === 'admin') {
                             window.location.href = 'https://mbs163.github.io/web-portal/admin/index.html';
+                        } else if (result.role === 'siswa') {
+                            window.location.href = 'siswa-dashboard.html'; // Langsung ke Dashboard Siswa
                         } else {
                             window.location.href = 'index.html'; 
                         }
