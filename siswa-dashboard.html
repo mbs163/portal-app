@@ -22,6 +22,7 @@
             .print-combine-alamat { display: block !important; }
             .grid-alamat-inputs { display: none !important; }
         }
+        /* Loader kecil untuk dropdown wilayah */
         .select-loading { background: url('https://cdnjs.cloudflare.com/ajax/libs/galleriffic/2.0/css/loader.gif') no-repeat right 10px center; background-size: 16px; }
     </style>
 </head>
@@ -331,40 +332,43 @@
         document.getElementById('nisn-display').innerText = nisn;
 
         // ==========================================
-        // SISTEM API WILAYAH INDONESIA (DENGAN FALLBACK AMAN)
+        // SISTEM API WILAYAH (IBNUX & FALLBACK AMAN)
         // ==========================================
-        // Menggunakan API EMSIFA (Standar yang paling sering online di GitHub)
-        const API_WILAYAH = "https://emsifa.github.io/api-wilayah-indonesia/api/";
+        // Menggunakan API dari ibnux/data-indonesia (Turunan dari cahyadsn & sangat stabil di GitHub Pages)
+        const API_PROV = "https://ibnux.github.io/data-indonesia/provinsi.json";
+        const API_KAB  = "https://ibnux.github.io/data-indonesia/kabupaten/";
+        const API_KEC  = "https://ibnux.github.io/data-indonesia/kecamatan/";
+        const API_DESA = "https://ibnux.github.io/data-indonesia/kelurahan/";
+
         let elProv = document.getElementById('alamatProv');
         let elKab = document.getElementById('alamatKab');
         let elKec = document.getElementById('alamatKec');
         let elDesa = document.getElementById('alamatDesa');
 
-        // Fungsi Fallback jika API down
+        // Fungsi Penyelamat Jika Seluruh API Down
         function fallbackToManualInput() {
             document.getElementById('wrap-prov').innerHTML = `<label class="block text-xs font-bold text-slate-500 uppercase mb-1">Provinsi <span class="text-red-500">*</span></label><input type="text" id="alamatProv" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary outline-none" placeholder="Ketik Provinsi">`;
             document.getElementById('wrap-kab').innerHTML = `<label class="block text-xs font-bold text-slate-500 uppercase mb-1">Kabupaten/Kota <span class="text-red-500">*</span></label><input type="text" id="alamatKab" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary outline-none" placeholder="Ketik Kabupaten/Kota">`;
             document.getElementById('wrap-kec').innerHTML = `<label class="block text-xs font-bold text-slate-500 uppercase mb-1">Kecamatan <span class="text-red-500">*</span></label><input type="text" id="alamatKec" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary outline-none" placeholder="Ketik Kecamatan">`;
             document.getElementById('wrap-desa').innerHTML = `<label class="block text-xs font-bold text-slate-500 uppercase mb-1">Desa/Kel. <span class="text-red-500">*</span></label><input type="text" id="alamatDesa" required class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary outline-none" placeholder="Ketik Desa/Kelurahan">`;
 
-            // Hubungkan kembali event listener ke input teks baru
             ['alamatJalan','alamatDesa','alamatKec','alamatKab','alamatProv','alamatPos'].forEach(id => {
                 document.getElementById(id)?.addEventListener('input', updatePrintAlamat);
             });
         }
 
-        // Fetch Provinsi
-        fetch(API_WILAYAH + 'provinces.json')
+        // Mulai Fetch Data Provinsi
+        fetch(API_PROV)
             .then(res => {
                 if(!res.ok) throw new Error("API Down");
                 return res.json();
             })
             .then(data => {
                 let options = '<option value="">Pilih Provinsi...</option>';
-                data.forEach(prov => { options += `<option value="${prov.name}" data-id="${prov.id}">${prov.name}</option>`; });
+                data.forEach(prov => { options += `<option value="${prov.nama}" data-id="${prov.id}">${prov.nama}</option>`; });
                 elProv.innerHTML = options;
 
-                // Event Listeners jika API Sukses
+                // Event Listener Provinsi
                 elProv.addEventListener('change', (e) => {
                     elKab.innerHTML = '<option value="">Memuat Kabupaten...</option>';
                     elKab.classList.add('select-loading'); elKab.disabled = true;
@@ -374,17 +378,16 @@
                     const id = e.target.options[e.target.selectedIndex].getAttribute('data-id');
                     if(!id) return;
 
-                    fetch(`${API_WILAYAH}regencies/${id}.json`)
-                        .then(res => res.json())
-                        .then(data => {
-                            let opts = '<option value="">Pilih Kabupaten/Kota...</option>';
-                            data.forEach(k => { opts += `<option value="${k.name}" data-id="${k.id}">${k.name}</option>`; });
-                            elKab.innerHTML = opts;
-                            elKab.classList.remove('select-loading'); elKab.disabled = false;
-                            updatePrintAlamat();
-                        });
+                    fetch(`${API_KAB}${id}.json`).then(res => res.json()).then(data => {
+                        let opts = '<option value="">Pilih Kabupaten/Kota...</option>';
+                        data.forEach(k => { opts += `<option value="${k.nama}" data-id="${k.id}">${k.nama}</option>`; });
+                        elKab.innerHTML = opts;
+                        elKab.classList.remove('select-loading'); elKab.disabled = false;
+                        updatePrintAlamat();
+                    });
                 });
 
+                // Event Listener Kabupaten
                 elKab.addEventListener('change', (e) => {
                     elKec.innerHTML = '<option value="">Memuat Kecamatan...</option>';
                     elKec.classList.add('select-loading'); elKec.disabled = true;
@@ -393,17 +396,16 @@
                     const id = e.target.options[e.target.selectedIndex].getAttribute('data-id');
                     if(!id) return;
 
-                    fetch(`${API_WILAYAH}districts/${id}.json`)
-                        .then(res => res.json())
-                        .then(data => {
-                            let opts = '<option value="">Pilih Kecamatan...</option>';
-                            data.forEach(k => { opts += `<option value="${k.name}" data-id="${k.id}">${k.name}</option>`; });
-                            elKec.innerHTML = opts;
-                            elKec.classList.remove('select-loading'); elKec.disabled = false;
-                            updatePrintAlamat();
-                        });
+                    fetch(`${API_KEC}${id}.json`).then(res => res.json()).then(data => {
+                        let opts = '<option value="">Pilih Kecamatan...</option>';
+                        data.forEach(k => { opts += `<option value="${k.nama}" data-id="${k.id}">${k.nama}</option>`; });
+                        elKec.innerHTML = opts;
+                        elKec.classList.remove('select-loading'); elKec.disabled = false;
+                        updatePrintAlamat();
+                    });
                 });
 
+                // Event Listener Kecamatan
                 elKec.addEventListener('change', (e) => {
                     elDesa.innerHTML = '<option value="">Memuat Desa/Kelurahan...</option>';
                     elDesa.classList.add('select-loading'); elDesa.disabled = true;
@@ -411,25 +413,24 @@
                     const id = e.target.options[e.target.selectedIndex].getAttribute('data-id');
                     if(!id) return;
 
-                    fetch(`${API_WILAYAH}villages/${id}.json`)
-                        .then(res => res.json())
-                        .then(data => {
-                            let opts = '<option value="">Pilih Desa/Kelurahan...</option>';
-                            data.forEach(k => { opts += `<option value="${k.name}" data-id="${k.id}">${k.name}</option>`; });
-                            elDesa.innerHTML = opts;
-                            elDesa.classList.remove('select-loading'); elDesa.disabled = false;
-                            updatePrintAlamat();
-                        });
+                    fetch(`${API_DESA}${id}.json`).then(res => res.json()).then(data => {
+                        let opts = '<option value="">Pilih Desa/Kelurahan...</option>';
+                        data.forEach(k => { opts += `<option value="${k.nama}" data-id="${k.id}">${k.nama}</option>`; });
+                        elDesa.innerHTML = opts;
+                        elDesa.classList.remove('select-loading'); elDesa.disabled = false;
+                        updatePrintAlamat();
+                    });
                 });
 
                 elDesa.addEventListener('change', updatePrintAlamat);
             })
             .catch(err => {
+                // JIKA API MATI, LANGSUNG UBAH JADI INPUT MANUAL
                 console.warn("Beralih ke Input Manual. API Wilayah Gagal:", err);
                 fallbackToManualInput();
                 Swal.fire({
                     toast: true, position: 'top-end', icon: 'info',
-                    title: 'Sistem wilayah otomatis sedang gangguan. Silakan ketik alamat manual.',
+                    title: 'Sistem deteksi wilayah sedang sibuk. Silakan ketik alamat manual.',
                     showConfirmButton: false, timer: 6000
                 });
             });
