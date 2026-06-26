@@ -67,27 +67,45 @@
 
         <!-- MAIN DASHBOARD -->
         <div id="main-content" class="hidden">
-            <!-- PANEL INFO & KOMUNITAS -->
-<div class="space-y-4 mb-6">
-    <!-- Box Pengumuman Dinamis -->
-    <div id="box-pengumuman" class="p-4 bg-blue-50 border-l-4 border-blue-500 rounded-lg shadow-sm">
-        <h4 class="font-bold text-blue-800 flex items-center">
-            <i class="fa-solid fa-bullhorn mr-2"></i> Pengumuman Terbaru
-        </h4>
-        <p class="text-sm text-blue-700 mt-1" id="text-pengumuman">Memuat pengumuman...</p>
-    </div>
+           <!-- PANEL INFO & KOMUNITAS (DESAIN BARU) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8 no-print">
+                
+                <!-- Box Pengumuman Dinamis -->
+                <div id="box-pengumuman" class="bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-2xl border border-blue-100 shadow-sm relative overflow-hidden flex flex-col justify-center transition-all hover:shadow-md">
+                    <!-- Icon Watermark Background -->
+                    <i class="fa-solid fa-bullhorn absolute -right-2 -bottom-4 text-8xl text-blue-500 opacity-[0.07] rotate-[-15deg]"></i>
+                    
+                    <div class="relative z-10">
+                        <div class="flex items-center gap-3 mb-3">
+                            <span class="flex h-7 w-7 relative">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-7 w-7 bg-blue-600 text-white items-center justify-center text-xs"><i class="fa-solid fa-bell"></i></span>
+                            </span>
+                            <h4 class="font-extrabold text-blue-900 uppercase tracking-widest text-sm">Papan Informasi</h4>
+                        </div>
+                        <p class="text-sm text-blue-800 font-medium leading-relaxed" id="text-pengumuman">Memuat pengumuman...</p>
+                    </div>
+                </div>
 
-    <!-- Box WA Channel -->
-    <div class="p-4 bg-green-50 border-l-4 border-green-500 rounded-lg shadow-sm flex items-center justify-between">
-        <div>
-            <h4 class="font-bold text-green-800">Butuh Bantuan Cepat?</h4>
-            <p class="text-xs text-green-600">Gabung ke WhatsApp Channel untuk info update.</p>
-        </div>
-        <a href="URL_CHANNEL_WA_ANDA" target="_blank" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-bold text-sm transition-all shadow-md ml-4 whitespace-nowrap">
-            <i class="fa-brands fa-whatsapp mr-2"></i> Gabung Channel
-        </a>
-    </div>
-</div>
+                <!-- Box WA Channel -->
+                <div class="bg-gradient-to-br from-emerald-50 to-teal-50 p-6 rounded-2xl border border-emerald-100 shadow-sm relative overflow-hidden flex flex-col justify-center transition-all hover:shadow-md">
+                     <!-- Icon Watermark Background -->
+                    <i class="fa-brands fa-whatsapp absolute -right-2 -bottom-4 text-8xl text-emerald-500 opacity-[0.07] rotate-[-15deg]"></i>
+                    
+                    <div class="relative z-10 flex flex-col h-full justify-between gap-4">
+                        <div>
+                            <h4 class="font-extrabold text-emerald-900 uppercase tracking-widest text-sm mb-2 flex items-center gap-2">
+                                <i class="fa-solid fa-headset text-emerald-600"></i> Pusat Bantuan
+                            </h4>
+                            <p class="text-sm text-emerald-700 font-medium leading-relaxed">Jangan ketinggalan info penting! Gabung ke Channel resmi kami.</p>
+                        </div>
+                        <a href="URL_CHANNEL_WA_ANDA" target="_blank" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-3 rounded-xl font-bold text-sm transition-all shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-2 mt-auto">
+                            <i class="fa-brands fa-whatsapp text-xl"></i> Gabung WhatsApp Channel
+                        </a>
+                    </div>
+                </div>
+
+            </div>
             <!-- STEPPER INDICATOR -->
             <div class="step-indicator-container flex items-center justify-between mb-8 relative px-4">
                 <div class="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-slate-200 -z-10 rounded-full"></div>
