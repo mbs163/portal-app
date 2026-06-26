@@ -448,6 +448,9 @@
 
         async function init() {
             try {
+                // --- INI TAMBAHANNYA: Memanggil fungsi pengumuman agar jalan ---
+                loadPengumuman();
+
                 const res = await fetch(URL_GAS + "?action=getPMB");
                 const json = await res.json();
                 const dataSiswa = json.data.find(s => s.nisn.toString() === nisn.toString());
@@ -628,23 +631,19 @@
             window.location.href = 'index.html';
         }
 
-        init();
-
         async function loadPengumuman() {
-    try {
-        const res = await fetch(URL_GAS + "?action=getPengumuman");
-        const json = await res.json();
-        if (json.status === 'success' && json.data) {
-            document.getElementById('text-pengumuman').innerText = json.data;
-        } else {
-            document.getElementById('box-pengumuman').classList.add('hidden'); // Sembunyikan jika kosong
+            try {
+                const res = await fetch(URL_GAS + "?action=getPengumuman");
+                const json = await res.json();
+                if (json.status === 'success' && json.data) {
+                    document.getElementById('text-pengumuman').innerText = json.data;
+                } else {
+                    document.getElementById('box-pengumuman').classList.add('hidden'); // Sembunyikan jika kosong
+                }
+            } catch (e) { console.log("Gagal memuat pengumuman"); }
         }
-    } catch (e) { console.log("Gagal memuat pengumuman"); }
-}
 
-// PANGGIL FUNGSI INI DI DALAM init()
-// Cari fungsi init() dan tambahkan: loadPengumuman();
+        init(); // Ini yang akan memicu semuanya jalan saat web dibuka
     </script>
-    
 </body>
 </html>
