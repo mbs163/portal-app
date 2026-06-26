@@ -519,7 +519,7 @@
         return;
     }
 
-    const MAX_SIZE = 300 * 1024; // 300 KB
+    const MAX_SIZE = 2 * 1024 * 1024; // 2 MB (2.097.152 bytes)
     if (fIjazah.size > MAX_SIZE || fKK.size > MAX_SIZE || fFoto.size > MAX_SIZE) {
         Swal.fire('File Terlalu Besar!', 'Maksimal 2MB per file.', 'error');
         return;
@@ -541,7 +541,7 @@
             anakKe: document.getElementById('anakKe').value,
             cita: document.getElementById('cita').value,
             hobby: document.getElementById('hobby').value,
-            alamat: document.getElementById('print-alamat-text').innerText,
+            alamat: document.getElementById('print-alamat-text').textContent,
             namaAyah: document.getElementById('namaAyah').value,
             pendAyah: document.getElementById('pendAyah').value,
             pekAyah: document.getElementById('pekAyah').value,
