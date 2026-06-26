@@ -103,11 +103,11 @@
     <!-- STEPPER INDICATOR (Warna Indiggo Berbeda) -->
     <div class="step-indicator-container flex items-center justify-between mb-8 relative px-4">
         <div class="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-slate-200 -z-10 rounded-full"></div>
-        <div class="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-indigo-600 -z-10 rounded-full transition-all duration-300" id="progress-bar" style="width: 0%"></div>
+        <div class="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-primary -z-10 rounded-full transition-all duration-300" id="progress-bar" style="width: 0%"></div>
         
         <div class="flex flex-col items-center gap-2">
-            <div id="ind-1" class="w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold shadow-md ring-4 ring-white">1</div>
-            <span class="text-xs font-bold text-indigo-600">Data Diri</span>
+            <div id="ind-1" class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold shadow-md ring-4 ring-white">1</div>
+            <span class="text-xs font-bold text-primary">Data Diri</span>
         </div>
         <div class="flex flex-col items-center gap-2">
             <div id="ind-2" class="w-10 h-10 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center font-bold shadow-md ring-4 ring-white">2</div>
@@ -528,9 +528,9 @@
 
             document.getElementById('step-'+from).classList.add('hidden');
             document.getElementById('step-'+to).classList.remove('hidden');
-            document.getElementById('ind-'+to).classList.replace('bg-slate-200', 'bg-indigo-600');
+            document.getElementById('ind-'+to).classList.replace('bg-slate-200', 'bg-primary');
             document.getElementById('ind-'+to).classList.replace('text-slate-500', 'text-white');
-            document.getElementById('txt-'+to).classList.replace('text-slate-500', 'text-indigo-600');
+            document.getElementById('txt-'+to).classList.replace('text-slate-500', 'text-primary');
             if(to === 2) document.getElementById('progress-bar').style.width = '50%';
             if(to === 3) document.getElementById('progress-bar').style.width = '100%';
             if(to === 1) document.getElementById('progress-bar').style.width = '0%';
