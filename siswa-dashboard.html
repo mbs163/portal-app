@@ -67,7 +67,27 @@
 
         <!-- MAIN DASHBOARD -->
         <div id="main-content" class="hidden">
-            
+            <!-- PANEL INFO & KOMUNITAS -->
+<div class="space-y-4 mb-6">
+    <!-- Box Pengumuman Dinamis -->
+    <div id="box-pengumuman" class="p-4 bg-blue-50 border-l-4 border-blue-500 rounded-lg shadow-sm">
+        <h4 class="font-bold text-blue-800 flex items-center">
+            <i class="fa-solid fa-bullhorn mr-2"></i> Pengumuman Terbaru
+        </h4>
+        <p class="text-sm text-blue-700 mt-1" id="text-pengumuman">Memuat pengumuman...</p>
+    </div>
+
+    <!-- Box WA Channel -->
+    <div class="p-4 bg-green-50 border-l-4 border-green-500 rounded-lg shadow-sm flex items-center justify-between">
+        <div>
+            <h4 class="font-bold text-green-800">Butuh Bantuan Cepat?</h4>
+            <p class="text-xs text-green-600">Gabung ke WhatsApp Channel untuk info update.</p>
+        </div>
+        <a href="URL_CHANNEL_WA_ANDA" target="_blank" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-bold text-sm transition-all shadow-md ml-4 whitespace-nowrap">
+            <i class="fa-brands fa-whatsapp mr-2"></i> Gabung Channel
+        </a>
+    </div>
+</div>
             <!-- STEPPER INDICATOR -->
             <div class="step-indicator-container flex items-center justify-between mb-8 relative px-4">
                 <div class="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-slate-200 -z-10 rounded-full"></div>
@@ -609,6 +629,22 @@
         }
 
         init();
+
+        async function loadPengumuman() {
+    try {
+        const res = await fetch(URL_GAS + "?action=getPengumuman");
+        const json = await res.json();
+        if (json.status === 'success' && json.data) {
+            document.getElementById('text-pengumuman').innerText = json.data;
+        } else {
+            document.getElementById('box-pengumuman').classList.add('hidden'); // Sembunyikan jika kosong
+        }
+    } catch (e) { console.log("Gagal memuat pengumuman"); }
+}
+
+// PANGGIL FUNGSI INI DI DALAM init()
+// Cari fungsi init() dan tambahkan: loadPengumuman();
     </script>
+    
 </body>
 </html>
