@@ -639,8 +639,12 @@
 }
 
         function logout() {
-            localStorage.clear();
-            window.location.href = 'login.html';
+            // HANYA hapus kunci milik siswa
+            localStorage.removeItem('userNISN');
+            localStorage.removeItem('userName');
+            localStorage.removeItem('userRole'); // Hapus role agar benar-benar bersih
+            
+            window.location.href = 'login.html'; // Arahkan kembali ke file login siswa
         }
 
         async function loadPengumuman() {
